@@ -995,7 +995,7 @@ const data = {
   
 const container = document.getElementById('container');
 const width = container.scrollWidth;
-const height = container.scrollHeight || 600;
+const height = container.scrollHeight || 800;
 const nodeWidth = 120;
 const nodeHeight = 20;
 const graph = new G6.Graph({
@@ -1004,24 +1004,15 @@ const graph = new G6.Graph({
     height,
     fitView: true,
     modes: {
-        default: ['drag-canvas', 'drag-node'],
+        default: ['drag-canvas', 'drag-node', 'activate-relations'],
     },
     layout: {
-        type: 'dagre',
-        rankdir: 'LR',
-        align: 'UL',
-        controlPoints: true,
-        nodesepFunc: () => 1,
-        ranksepFunc: () => 1,
+        type: 'force',
+        preventOverlap: true,
+        linkDistance: 200,
     },
     defaultNode: {
-        size: [nodeWidth, nodeHeight],
-        type: 'rect',
-        style: {
-            lineWidth: 2,
-            stroke: '#5B8FF9',
-            fill: '#C6E5FF',
-        },
+        size: 40,
     },
     defaultEdge: {
         type: 'polyline',
@@ -1038,7 +1029,7 @@ const graph = new G6.Graph({
 });
 graph.data(data);
 graph.render();
-  
+
 if (typeof window !== 'undefined')
     window.onresize = () => {
         if (!graph || graph.get('destroyed')) return;
