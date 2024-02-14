@@ -349,8 +349,20 @@ const data = {
             label: '平均',
         },
         {
+            id: 'weightedMean',
+            label: '加重平均',
+        },
+        {
             id: 'variance',
             label: '分散',
+        },
+        {
+            id: 'covariance',
+            label: '共分散',
+        },
+        {
+            id: 'correlation',
+            label: '相関',
         },
         {
             id: 'summation',
@@ -447,6 +459,14 @@ const data = {
         {
             id: 'naturalLog',
             label: '自然対数',
+        },
+        {
+            id: 'expectedValue',
+            label: '期待値',
+        },
+        {
+            id: 'leastSquaresMethod',
+            label: '最小二乗法',
         },
     ],
     edges: [
@@ -875,6 +895,14 @@ const data = {
             target: 'variance',
         },
         {
+            source: 'variance',
+            target: 'covariance',
+        },
+        {
+            source: 'covariance',
+            target: 'correlation',
+        },
+        {
             source: 'addition',
             target: 'summation',
         },
@@ -990,12 +1018,28 @@ const data = {
             source: 'e',
             target: 'naturalLog',
         },
+        {
+            source: 'mean',
+            target: 'weightedMean',
+        },
+        {
+            source: 'weightedMean',
+            target: 'expectedValue',
+        },
+        {
+            source: 'probability',
+            target: 'expectedValue',
+        },
+        {
+            source: 'function',
+            target: 'leastSquaresMethod',
+        },
     ],
 };
   
 const container = document.getElementById('container');
 const width = container.scrollWidth;
-const height = container.scrollHeight || 800;
+const height = container.scrollHeight || 1000;
 const nodeWidth = 120;
 const nodeHeight = 20;
 const graph = new G6.Graph({
