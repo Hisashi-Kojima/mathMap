@@ -468,6 +468,22 @@ const data = {
             id: 'leastSquaresMethod',
             label: '最小二乗法',
         },
+        {
+            id: 'variable',
+            label: '変数',
+        },
+        {
+            id: 'constant',
+            label: '定数',
+        },
+        {
+            id: 'pythagoreanTheorem',
+            label: 'ピタゴラスの定理',
+        },
+        {
+            id: 'fermatLastTheorem',
+            label: 'フェルマーの最終定理',
+        },
     ],
     edges: [
         {
@@ -1033,6 +1049,30 @@ const data = {
         {
             source: 'function',
             target: 'leastSquaresMethod',
+        },
+        {
+            source: 'number',
+            target: 'variable',
+        },
+        {
+            source: 'number',
+            target: 'constant',
+        },
+        {
+            source: 'constant',
+            target: 'pi',
+        },
+        {
+            source: 'constant',
+            target: 'e',
+        },
+        {
+            source: 'algebraicEquation',
+            target: 'pythagoreanTheorem',
+        },
+        {
+            source: 'algebraicEquation',
+            target: 'fermatLastTheorem',
         },
     ],
 };
