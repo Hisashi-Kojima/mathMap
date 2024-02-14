@@ -484,6 +484,58 @@ const data = {
             id: 'fermatLastTheorem',
             label: 'フェルマーの最終定理',
         },
+        {
+            id: 'EDDefinitionOfLimit',
+            label: 'ε-δ論法',
+        },
+        {
+            id: 'squareRoot',
+            label: '平方根',
+        },
+        {
+            id: 'triangle',
+            label: '三角形',
+        },
+        {
+            id: 'rightTriangle',
+            label: '直角三角形',
+        },
+        {
+            id: 'isoscelesTriangle',
+            label: '二等辺三角形',
+        },
+        {
+            id: 'equilateralTriangle',
+            label: '正三角形',
+        },
+        {
+            id: 'quadrilateral',
+            label: '四角形',
+        },
+        {
+            id: 'trapezoid',
+            label: '台形',
+        },
+        {
+            id: 'parallelogram',
+            label: '平行四辺形',
+        },
+        {
+            id: 'rhombus',
+            label: 'ひし形',
+        },
+        {
+            id: 'rectangle',
+            label: '長方形',
+        },
+        {
+            id: 'square',
+            label: '正方形',
+        },
+        {
+            id: 'unknown',
+            label: '未知数',
+        },
     ],
     edges: [
         {
@@ -1073,6 +1125,86 @@ const data = {
         {
             source: 'algebraicEquation',
             target: 'fermatLastTheorem',
+        },
+        {
+            source: 'limit',
+            target: 'EDDefinitionOfLimit',
+        },
+        {
+            source: 'number',
+            target: 'squareRoot',
+        },
+        {
+            source: 'area',
+            target: 'squareRoot',
+        },
+        {
+            source: 'polygon',
+            target: 'triangle',
+        },
+        {
+            source: 'triangle',
+            target: 'rightTriangle',
+        },
+        {
+            source: 'triangle',
+            target: 'isoscelesTriangle',
+        },
+        {
+            source: 'isoscelesTriangle',
+            target: 'equilateralTriangle',
+        },
+        {
+            source: 'polygon',
+            target: 'quadrilateral',
+        },
+        {
+            source: 'quadrilateral',
+            target: 'trapezoid',
+        },
+        {
+            source: 'trapezoid',
+            target: 'parallelogram',
+        },
+        {
+            source: 'parallelogram',
+            target: 'rhombus',
+        },
+        {
+            source: 'parallelogram',
+            target: 'rectangle',
+        },
+        {
+            source: 'rhombus',
+            target: 'square',
+        },
+        {
+            source: 'rectangle',
+            target: 'square',
+        },
+        {
+            source: 'square',
+            target: 'squareRoot',
+        },
+        {
+            source: 'rightTriangle',
+            target: 'trigonometricRatios',
+        },
+        {
+            source: 'triangle',
+            target: 'sphericalTrigonometry',
+        },
+        {
+            source: 'variable',
+            target: 'identity',
+        },
+        {
+            source: 'variable',
+            target: 'unknown',
+        },
+        {
+            source: 'unknown',
+            target: 'equation',
         },
     ],
 };
