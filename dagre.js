@@ -1221,11 +1221,11 @@ function collectID(collected, uncollected, isSource){
         const node = graph.findById(neighboringNodeId);
         const nodeId = node._cfg.id;
 
-        uncollected.splice(uncollected.indexOf(nodeId), 1)[0];  // like pop()
         collected.push(nodeId);
 
         const edges = node._cfg.edges;
         for(let edge of edges){
+            // HACK: classを使えばisSourceの条件分岐が不要になりそう。
             if(isSource){
                 const sourceId = edge._cfg.model.source;
                 // 1. 小数<->実数のようにお互いを指しているパターン
@@ -1233,16 +1233,19 @@ function collectID(collected, uncollected, isSource){
                 // への対応条件
                 if(!collected.includes(sourceId) && !new_uncollected.includes(sourceId)){
                     new_uncollected.push(sourceId);
+                    graph.setItemState(edge, 'active', true);
                 }
             }else{
                 const targetId = edge._cfg.model.target;
                 if(!collected.includes(targetId) && !new_uncollected.includes(targetId)){
                     new_uncollected.push(targetId);
+                    graph.setItemState(edge, 'active', true);
                 }
             }
         }
-        
-        collectID(collected, new_uncollected, isSource);
+        if(new_uncollected.length > 0){
+            collectID(collected, new_uncollected, isSource);
+        }
     }
 };
 
@@ -1260,18 +1263,31 @@ G6.registerBehavior('custom-activate-relations', {
             'canvas:click': 'onCanvasClick'
         }
     },
-    // 全てのノードをinactiveにする関数。
-    removeNodesState(){
+    // 全てのノード、エッジの状態を初期状態に戻す。
+    resetState(){
         graph.findAllByState('node', 'active').forEach(node => {
             graph.setItemState(node, 'active', false);
         });
-    },
-    cancelNodesState(){
+        graph.findAllByState('edge', 'active').forEach(edge => {
+            graph.setItemState(edge, 'active', false);
+        });
+
         graph.findAllByState('node', 'nodeState:source').forEach(node => {
             graph.clearItemStates(node, ['nodeState:source']);
         });
         graph.findAllByState('node', 'nodeState:target').forEach(node => {
             graph.clearItemStates(node, ['nodeState:target']);
+        });
+    },
+    // new G6.Graph()のnodeStateStylesなどの箇所でラベルの色の指定をしたかったが、
+    // 反映されなかったので関数にしている。
+    updateNodeColor(node, color){
+        graph.updateItem(node, {
+            labelCfg: {
+                style: {
+                    fill: color
+                }
+            }
         });
     },
     onNodeClick(e){
@@ -1280,8 +1296,7 @@ G6.registerBehavior('custom-activate-relations', {
         // Get the configurations by this.
         // If you do not allow multiple nodes to be 'active', cancel the 'active' state for other nodes
         if(!this.multiple){
-            this.removeNodesState();
-            this.cancelNodesState();
+            this.resetState();
         }
         // activate the clicked node.
         graph.setItemState(node, 'active', true);
@@ -1299,6 +1314,7 @@ G6.registerBehavior('custom-activate-relations', {
             }else{
                 uncollected_sources.push(sourceNodeId);
             }
+            graph.setItemState(edge, 'active', true);
         }
         
         const sources = [nodeId];
@@ -1306,20 +1322,26 @@ G6.registerBehavior('custom-activate-relations', {
         const targets = [nodeId];
         collectID(targets, uncollected_targets, false);
 
-        graph.node()
+        graph.findAll('node', n => {
+            graph.setItemState(n, 'nodeState', 'irrelevant');
+            this.updateNodeColor(n, 'gray');
+        })
         for(let nodeId of sources){
-            graph.setItemState(graph.findById(nodeId), 'nodeState', 'source');
+            const n = graph.findById(nodeId);
+            graph.setItemState(n, 'nodeState', 'source');
+            this.updateNodeColor(n, 'black');
         }
         for(let nodeId of targets){
-            graph.setItemState(graph.findById(nodeId), 'nodeState', 'target');
+            const n = graph.findById(nodeId);
+            graph.setItemState(n, 'nodeState', 'target');
+            this.updateNodeColor(n, 'black');
         }
     },
     onCanvasClick(e){
         // shouldUpdate can be overrode by users.
         // Returning true means turning the 'active' to be false for all the nodes.
         if(this.shouldUpdate(e)){
-            this.removeNodesState();
-            this.cancelNodesState();
+            this.resetState();
         }
     }
 });
@@ -1349,9 +1371,14 @@ const graph = new G6.Graph({
     nodeStateStyles: {
         'nodeState:source': {
             fill: 'yellow',
+            stroke: '#ff8c00',
         },
         'nodeState:target': {
             fill: '#7fff00',
+            stroke: '#006400',
+        },
+        'nodeState:irrelevant': {
+            opacity: 0.5,
         },
     },
     defaultEdge: {
@@ -1365,6 +1392,11 @@ const graph = new G6.Graph({
             },
             radius: 20,
         },
+    },
+    edgeStateStyles: {
+        active: {
+            lineWidth: 3,
+        }
     },
 });
 graph.data(data);
