@@ -1208,7 +1208,123 @@ const data = {
         },
     ],
 };
-  
+
+/**
+ * source/targetのnode/edgeのIDを集める関数。
+ * @param {Array} collected - array of collected source/target nodeId.
+ * @param {Array} uncollected - array of uncollected source/target nodeId.
+ * @param {Boolean} isSource - true when collect source nodeId.
+ */
+function collectID(collected, uncollected, isSource){
+    const new_uncollected = [];
+    for(let neighboringNodeId of uncollected){
+        const node = graph.findById(neighboringNodeId);
+        const nodeId = node._cfg.id;
+
+        uncollected.splice(uncollected.indexOf(nodeId), 1)[0];  // like pop()
+        collected.push(nodeId);
+
+        const edges = node._cfg.edges;
+        for(let edge of edges){
+            if(isSource){
+                const sourceId = edge._cfg.model.source;
+                // 1. 小数<->実数のようにお互いを指しているパターン
+                // 2. 複数のuncollectedNodeがcollected、uncollectedに含まれていないnodeを指しているパターン
+                // への対応条件
+                if(!collected.includes(sourceId) && !new_uncollected.includes(sourceId)){
+                    new_uncollected.push(sourceId);
+                }
+            }else{
+                const targetId = edge._cfg.model.target;
+                if(!collected.includes(targetId) && !new_uncollected.includes(targetId)){
+                    new_uncollected.push(targetId);
+                }
+            }
+        }
+        
+        collectID(collected, new_uncollected, isSource);
+    }
+};
+
+G6.registerBehavior('custom-activate-relations', {
+    getDefaultCfg(){
+        return {
+            multiple: false,
+            trigger: 'click',
+            activateState: 'selected'
+        }
+    },
+    getEvents(){
+        return {
+            'node:click': 'onNodeClick',
+            'canvas:click': 'onCanvasClick'
+        }
+    },
+    // 全てのノードをinactiveにする関数。
+    removeNodesState(){
+        graph.findAllByState('node', 'active').forEach(node => {
+            graph.setItemState(node, 'active', false);
+        });
+    },
+    cancelNodesState(){
+        graph.findAllByState('node', 'nodeState:source').forEach(node => {
+            graph.clearItemStates(node, ['nodeState:source']);
+        });
+        graph.findAllByState('node', 'nodeState:target').forEach(node => {
+            graph.clearItemStates(node, ['nodeState:target']);
+        });
+    },
+    onNodeClick(e){
+        const graph = this.graph;
+        const node = e.item;
+        // Get the configurations by this.
+        // If you do not allow multiple nodes to be 'active', cancel the 'active' state for other nodes
+        if(!this.multiple){
+            this.removeNodesState();
+            this.cancelNodesState();
+        }
+        // activate the clicked node.
+        graph.setItemState(node, 'active', true);
+
+        const uncollected_sources = []
+        const uncollected_targets = []
+
+        const nodeId = node._cfg.id;
+        const edges = node._cfg.edges;
+        for(let edge of edges){
+            const sourceNodeId = edge._cfg.model.source;
+
+            if(sourceNodeId == nodeId){
+                uncollected_targets.push(edge._cfg.model.target);
+            }else{
+                uncollected_sources.push(sourceNodeId);
+            }
+        }
+        
+        const sources = [nodeId];
+        collectID(sources, uncollected_sources, true);
+        const targets = [nodeId];
+        collectID(targets, uncollected_targets, false);
+
+        graph.node()
+        for(let nodeId of sources){
+            graph.setItemState(graph.findById(nodeId), 'nodeState', 'source');
+        }
+        for(let nodeId of targets){
+            graph.setItemState(graph.findById(nodeId), 'nodeState', 'target');
+        }
+    },
+    onCanvasClick(e){
+        // shouldUpdate can be overrode by users.
+        // Returning true means turning the 'active' to be false for all the nodes.
+        if(this.shouldUpdate(e)){
+            this.removeNodesState();
+            this.cancelNodesState();
+        }
+    }
+});
+
+
 const container = document.getElementById('container');
 const width = container.scrollWidth;
 const height = container.scrollHeight || 1000;
@@ -1220,7 +1336,7 @@ const graph = new G6.Graph({
     height,
     fitView: true,
     modes: {
-        default: ['drag-canvas', 'drag-node', 'activate-relations'],
+        default: ['drag-canvas', 'drag-node', 'custom-activate-relations'],
     },
     layout: {
         type: 'force',
@@ -1229,6 +1345,14 @@ const graph = new G6.Graph({
     },
     defaultNode: {
         size: 40,
+    },
+    nodeStateStyles: {
+        'nodeState:source': {
+            fill: 'yellow',
+        },
+        'nodeState:target': {
+            fill: '#7fff00',
+        },
     },
     defaultEdge: {
         type: 'polyline',
