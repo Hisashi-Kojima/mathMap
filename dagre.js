@@ -1278,6 +1278,10 @@ G6.registerBehavior('custom-activate-relations', {
         graph.findAllByState('node', 'nodeState:target').forEach(node => {
             graph.clearItemStates(node, ['nodeState:target']);
         });
+        graph.findAllByState('node', 'nodeState:irrelevant').forEach(node => {
+            graph.clearItemStates(node, ['nodeState:irrelevant']);
+            this.updateNodeColor(node, 'black');
+        });
     },
     // new G6.Graph()のnodeStateStylesなどの箇所でラベルの色の指定をしたかったが、
     // 反映されなかったので関数にしている。
