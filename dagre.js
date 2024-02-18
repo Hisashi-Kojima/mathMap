@@ -1,1513 +1,11 @@
-const data = {
-    nodes: [
-        {
-            id: 'math',
-            label: '数学',
-        },
-        {
-            id: 'number',
-            label: '数',
-        },
-        {
-            id: 'shape',
-            label: '図形',
-        },
-        {
-            id: 'complexNumber',
-            label: '複素数',
-        },
-        {
-            id: 'realNumber',
-            label: '実数',
-        },
-        {
-            id: 'imaginaryNumber',
-            label: '虚数',
-        },
-        {
-            id: 'area',
-            label: '面積',
-        },
-        {
-            id: 'volume',
-            label: '体積',
-        },
-        {
-            id: 'rationalNumber',
-            label: '有理数',
-        },
-        {
-            id: 'irrationalNumber',
-            label: '無理数',
-        },
-        {
-            id: 'integer',
-            label: '整数',
-        },
-        {
-            id: 'fraction',
-            label: '分数',
-        },
-        {
-            id: 'oddNumber',
-            label: '奇数',
-        },
-        {
-            id: 'evenNumber',
-            label: '偶数',
-        },
-        {
-            id: 'primeNumber',
-            label: '素数',
-        },
-        {
-            id: 'naturalNumber',
-            label: '自然数',
-        },
-        {
-            id: 'decimal',
-            label: '小数',
-        },
-        {
-            id: 'repeatingDecimal',
-            label: '循環小数',
-        },
-        {
-            id: 'nonRepeatingDecimal',
-            label: '非循環小数',
-        },
-        {
-            id: 'pi',
-            label: '円周率',
-        },
-        {
-            id: 'e',
-            label: 'ネイピア数',
-        },
-        {
-            id: 'transcendentalNumber',
-            label: '超越数',
-        },
-        {
-            id: 'absoluteValue',
-            label: '絶対値',
-        },
-        {
-            id: 'distance',
-            label: '距離',
-        },
-        {
-            id: 'expression',
-            label: '数式',
-        },
-        {
-            id: 'equality',
-            label: '等式',
-        },
-        {
-            id: 'inequality',
-            label: '不等式',
-        },
-        {
-            id: 'identity',
-            label: '恒等式',
-        },
-        {
-            id: 'equation',
-            label: '方程式',
-        },
-        {
-            id: 'algebraicEquation',
-            label: '代数方程式',
-        },
-        {
-            id: 'functionalEquation',
-            label: '関数方程式',
-        },
-        {
-            id: 'differentialEquation',
-            label: '微分方程式',
-        },
-        {
-            id: 'ordinaryDifferentialEquation',
-            label: '常微分方程式',
-        },
-        {
-            id: 'partialDifferentialEquation',
-            label: '偏微分方程式',
-        },
-        {
-            id: 'SIRModel',
-            label: 'SIRモデル',
-        },
-        {
-            id: 'RSACrypto',
-            label: 'RSA暗号',
-        },
-        {
-            id: 'congruence',
-            label: '整数の合同',
-        },
-        {
-            id: 'calculation',
-            label: '計算',
-        },
-        {
-            id: 'elementaryArithmetic',
-            label: '四則演算',
-        },
-        {
-            id: 'addition',
-            label: '加法',
-        },
-        {
-            id: 'subtraction',
-            label: '減法',
-        },
-        {
-            id: 'multiplication',
-            label: '乗法',
-        },
-        {
-            id: 'division',
-            label: '除法',
-        },
-        {
-            id: 'modulo',
-            label: '剰余演算',
-        },
-        {
-            id: 'differentiation',
-            label: '微分',
-        },
-        {
-            id: 'integration',
-            label: '積分',
-        },
-        {
-            id: 'set',
-            label: '集合',
-        },
-        {
-            id: 'map',
-            label: '写像',
-        },
-        {
-            id: 'function',
-            label: '関数',
-        },
-        {
-            id: 'trigonometricFunction',
-            label: '三角関数',
-        },
-        {
-            id: 'sin',
-            label: 'sin',
-        },
-        {
-            id: 'cos',
-            label: 'cos',
-        },
-        {
-            id: 'tan',
-            label: 'tan',
-        },
-        {
-            id: 'cosSimilarity',
-            label: 'cos類似度',
-        },
-        {
-            id: 'probability',
-            label: '確率',
-        },
-        {
-            id: 'permutation',
-            label: '順列',
-        },
-        {
-            id: 'combination',
-            label: '組み合わせ',
-        },
-        {
-            id: 'gacha',
-            label: 'ガチャ',
-        },
-        {
-            id: 'exponentiation',
-            label: 'べき乗',
-        },
-        {
-            id: 'log',
-            label: '対数',
-        },
-        {
-            id: 'locationEstimation',
-            label: '位置推定',
-        },
-        {
-            id: 'graphTheory',
-            label: 'グラフ理論',
-        },
-        {
-            id: 'tensor',
-            label: 'テンソル',
-        },
-        {
-            id: 'vector',
-            label: 'ベクトル',
-        },
-        {
-            id: 'matrix',
-            label: '行列',
-        },
-        {
-            id: 'pageRank',
-            label: 'ページランク',
-        },
-        {
-            id: 'quaternion',
-            label: '四元数',
-        },
-        {
-            id: 'rotation',
-            label: '回転',
-        },
-        {
-            id: 'rotationMatrix',
-            label: '回転行列',
-        },
-        {
-            id: 'angle',
-            label: '角',
-        },
-        {
-            id: 'eulerAngles',
-            label: 'オイラー角',
-        },
-        {
-            id: 'NLP',
-            label: '自然言語処理',
-        },
-        {
-            id: 'compoundInterest',
-            label: '複利',
-        },
-        {
-            id: 'limit',
-            label: '極限',
-        },
-        {
-            id: 'ratio',
-            label: '比',
-        },
-        {
-            id: 'trigonometricRatios',
-            label: '三角比',
-        },
-        {
-            id: 'goldenRatio',
-            label: '黄金比',
-        },
-        {
-            id: 'silverRatio',
-            label: '白銀比',
-        },
-        {
-            id: 'paperSizeRatio',
-            label: '用紙のサイズ',
-        },
-        {
-            id: 'monaLisa',
-            label: 'モナ・リザ',
-        },
-        {
-            id: 'numericalSequence',
-            label: '数列',
-        },
-        {
-            id: 'arithmeticSequence',
-            label: '等差数列',
-        },
-        {
-            id: 'geometricSequence',
-            label: '等比数列',
-        },
-        {
-            id: 'fibonacciSequence',
-            label: 'フィボナッチ数列',
-        },
-        {
-            id: 'recurrenceRelation',
-            label: '漸化式',
-        },
-        {
-            id: 'sequenceOfDifferences',
-            label: '階差数列',
-        },
-        {
-            id: 'mean',
-            label: '平均',
-        },
-        {
-            id: 'weightedMean',
-            label: '加重平均',
-        },
-        {
-            id: 'variance',
-            label: '分散',
-        },
-        {
-            id: 'covariance',
-            label: '共分散',
-        },
-        {
-            id: 'correlation',
-            label: '相関',
-        },
-        {
-            id: 'summation',
-            label: '総和',
-        },
-        {
-            id: 'productOfSequence',
-            label: '総乗',
-        },
-        {
-            id: 'series',
-            label: '級数',
-        },
-        {
-            id: 'taylorSeries',
-            label: 'テイラー級数',
-        },
-        {
-            id: 'maclaurinSeries',
-            label: 'マクローリン級数',
-        },
-        {
-            id: 'fourierSeries',
-            label: 'フーリエ級数',
-        },
-        {
-            id: 'laplaceEquation',
-            label: 'ラプラス方程式',
-        },
-        {
-            id: 'diffusionEquation',
-            label: '拡散方程式',
-        },
-        {
-            id: 'maxwellEquations',
-            label: 'マクスウェルの方程式',
-        },
-        {
-            id: 'theoryOfRelativity',
-            label: '相対性理論',
-        },
-        {
-            id: 'GPS',
-            label: 'GPS',
-        },
-        {
-            id: 'plane',
-            label: '平面',
-        },
-        {
-            id: 'surface',
-            label: '曲面',
-        },
-        {
-            id: 'body',
-            label: '立体',
-        },
-        {
-            id: 'polygon',
-            label: '多角形',
-        },
-        {
-            id: 'circle',
-            label: '円',
-        },
-        {
-            id: 'ball',
-            label: '球',
-        },
-        {
-            id: 'pyramid',
-            label: '角錐',
-        },
-        {
-            id: 'prism',
-            label: '角柱',
-        },
-        {
-            id: 'cylinder',
-            label: '円柱',
-        },
-        {
-            id: 'cone',
-            label: '円錐',
-        },
-        {
-            id: 'sphere',
-            label: '球面',
-        },
-        {
-            id: 'sphericalTrigonometry',
-            label: '球面三角法',
-        },
-        {
-            id: 'commonLog',
-            label: '常用対数',
-        },
-        {
-            id: 'naturalLog',
-            label: '自然対数',
-        },
-        {
-            id: 'expectedValue',
-            label: '期待値',
-        },
-        {
-            id: 'leastSquaresMethod',
-            label: '最小二乗法',
-        },
-        {
-            id: 'variable',
-            label: '変数',
-        },
-        {
-            id: 'constant',
-            label: '定数',
-        },
-        {
-            id: 'pythagoreanTheorem',
-            label: 'ピタゴラスの定理',
-        },
-        {
-            id: 'fermatLastTheorem',
-            label: 'フェルマーの最終定理',
-        },
-        {
-            id: 'EDDefinitionOfLimit',
-            label: 'ε-δ論法',
-        },
-        {
-            id: 'squareRoot',
-            label: '平方根',
-        },
-        {
-            id: 'triangle',
-            label: '三角形',
-        },
-        {
-            id: 'rightTriangle',
-            label: '直角三角形',
-        },
-        {
-            id: 'isoscelesTriangle',
-            label: '二等辺三角形',
-        },
-        {
-            id: 'equilateralTriangle',
-            label: '正三角形',
-        },
-        {
-            id: 'quadrilateral',
-            label: '四角形',
-        },
-        {
-            id: 'trapezoid',
-            label: '台形',
-        },
-        {
-            id: 'parallelogram',
-            label: '平行四辺形',
-        },
-        {
-            id: 'rhombus',
-            label: 'ひし形',
-        },
-        {
-            id: 'rectangle',
-            label: '長方形',
-        },
-        {
-            id: 'square',
-            label: '正方形',
-        },
-        {
-            id: 'unknown',
-            label: '未知数',
-        },
-        {
-            id: 'graphOfFunction',
-            label: '関数のグラフ',
-        },
-        {
-            id: 'locus',
-            label: '軌跡',
-        },
-        {
-            id: 'trochoid',
-            label: 'トロコイド',
-        },
-        {
-            id: 'cycloid',
-            label: 'サイクロイド',
-        },
-        {
-            id: 'odds',
-            label: 'オッズ',
-        },
-        {
-            id: 'directedGraph',
-            label: '有向グラフ',
-        },
-        {
-            id: 'undirectedGraph',
-            label: '無向グラフ',
-        },
-        {
-            id: 'markovProcess',
-            label: 'マルコフ過程',
-        },
-        {
-            id: 'markovChain',
-            label: 'マルコフ連鎖',
-        },
-        {
-            id: 'stochasticProcess',
-            label: '確率過程',
-        },
-        {
-            id: 'wienerProcess',
-            label: 'ウィーナー過程',
-        },
-        {
-            id: 'randomVariable',
-            label: '確率変数',
-        },
-        {
-            id: 'probabilityDistribution',
-            label: '確率分布',
-        },
-        {
-            id: 'discreteProbabilityDistribution',
-            label: '離散確率分布',
-        },
-        {
-            id: 'continuousProbabilityDistribution',
-            label: '連続確率分布',
-        },
-        {
-            id: 'binomialDistribution',
-            label: '二項分布',
-        },
-        {
-            id: 'normalDistribution',
-            label: '正規分布',
-        },
-        {
-            id: 'hypothesisTesting',
-            label: '仮説検定',
-        },
-        {
-            id: 'parametricHypothesisTesting',
-            label: 'パラメトリック検定法',
-        },
-        {
-            id: 'nonParametricHypothesisTesting',
-            label: 'ノンパラメトリック検定法',
-        },
-        {
-            id: 'tTest',
-            label: 't検定',
-        },
-        {
-            id: 'chiSquaredTest',
-            label: 'カイ二乗検定',
-        },
-        {
-            id: 'tDistribution',
-            label: 't分布',
-        },
-        {
-            id: 'pValue',
-            label: 'P値',
-        },
-        {
-            id: 'lawOfLargeNumbers',
-            label: '大数の法則',
-        },
-        {
-            id: 'calculateInsurancePremium',
-            label: '保険料算出',
-        },
-        {
-            id: 'centralLimitTheorem',
-            label: '中心極限定理',
-        },
-        {
-            id: 'conditionalProbability',
-            label: '条件付き確率',
-        },
-        {
-            id: 'bayesTheorem',
-            label: 'ベイズの定理',
-        },
-        {
-            id: 'bayesianFilter',
-            label: 'ベイジアンフィルタ',
-        },
-        {
-            id: 'spamFilter',
-            label: 'スパムフィルタ',
-        },
-    ],
-    edges: [
-        {
-            source: 'math',
-            target: 'number',
-        },
-        {
-            source: 'math',
-            target: 'shape',
-        },
-        {
-            source: 'number',
-            target: 'quaternion',
-        },
-        {
-            source: 'quaternion',
-            target: 'complexNumber',
-        },
-        {
-            source: 'complexNumber',
-            target: 'realNumber',
-        },
-        {
-            source: 'complexNumber',
-            target: 'imaginaryNumber',
-        },
-        {
-            source: 'shape',
-            target: 'area',
-        },
-        {
-            source: 'shape',
-            target: 'volume',
-        },
-        {
-            source: 'realNumber',
-            target: 'rationalNumber',
-        },
-        {
-            source: 'realNumber',
-            target: 'irrationalNumber',
-        },
-        {
-            source: 'rationalNumber',
-            target: 'integer',
-        },
-        {
-            source: 'rationalNumber',
-            target: 'fraction',
-        },
-        {
-            source: 'integer',
-            target: 'oddNumber',
-        },
-        {
-            source: 'integer',
-            target: 'evenNumber',
-        },
-        {
-            source: 'integer',
-            target: 'primeNumber',
-        },
-        {
-            source: 'integer',
-            target: 'naturalNumber',
-        },
-        {
-            source: 'realNumber',
-            target: 'decimal',
-        },
-        {
-            source: 'decimal',
-            target: 'realNumber',
-        },
-        {
-            source: 'decimal',
-            target: 'repeatingDecimal',
-        },
-        {
-            source: 'decimal',
-            target: 'nonRepeatingDecimal',
-        },
-        {
-            source: 'irrationalNumber',
-            target: 'nonRepeatingDecimal',
-        },
-        {
-            source: 'nonRepeatingDecimal',
-            target: 'irrationalNumber',
-        },
-        {
-            source: 'nonRepeatingDecimal',
-            target: 'pi',
-        },
-        {
-            source: 'nonRepeatingDecimal',
-            target: 'e',
-        },
-        {
-            source: 'complexNumber',
-            target: 'transcendentalNumber',
-        },
-        {
-            source: 'transcendentalNumber',
-            target: 'pi',
-        },
-        {
-            source: 'transcendentalNumber',
-            target: 'e',
-        },
-        {
-            source: 'number',
-            target: 'absoluteValue',
-        },
-        {
-            source: 'shape',
-            target: 'distance',
-        },
-        {
-            source: 'absoluteValue',
-            target: 'distance',
-        },
-        {
-            source: 'math',
-            target: 'expression',
-        },
-        {
-            source: 'expression',
-            target: 'equality',
-        },
-        {
-            source: 'expression',
-            target: 'inequality',
-        },
-        {
-            source: 'equality',
-            target: 'identity',
-        },
-        {
-            source: 'equality',
-            target: 'equation',
-        },
-        {
-            source: 'equation',
-            target: 'algebraicEquation',
-        },
-        {
-            source: 'equation',
-            target: 'functionalEquation',
-        },
-        {
-            source: 'functionalEquation',
-            target: 'differentialEquation',
-        },
-        {
-            source: 'differentialEquation',
-            target: 'ordinaryDifferentialEquation',
-        },
-        {
-            source: 'differentialEquation',
-            target: 'partialDifferentialEquation',
-        },
-        {
-            source: 'ordinaryDifferentialEquation',
-            target: 'SIRModel',
-        },
-        {
-            source: 'primeNumber',
-            target: 'RSACrypto',
-        },
-        {
-            source: 'integer',
-            target: 'congruence',
-        },
-        {
-            source: 'congruence',
-            target: 'RSACrypto',
-        },
-        {
-            source: 'math',
-            target: 'calculation',
-        },
-        {
-            source: 'calculation',
-            target: 'elementaryArithmetic',
-        },
-        {
-            source: 'elementaryArithmetic',
-            target: 'addition',
-        },
-        {
-            source: 'elementaryArithmetic',
-            target: 'subtraction',
-        },
-        {
-            source: 'elementaryArithmetic',
-            target: 'multiplication',
-        },
-        {
-            source: 'elementaryArithmetic',
-            target: 'division',
-        },
-        {
-            source: 'division',
-            target: 'modulo',
-        },
-        {
-            source: 'modulo',
-            target: 'congruence',
-        },
-        {
-            source: 'calculation',
-            target: 'differentiation',
-        },
-        {
-            source: 'calculation',
-            target: 'integration',
-        },
-        {
-            source: 'differentiation',
-            target: 'differentialEquation',
-        },
-        {
-            source: 'math',
-            target: 'set',
-        },
-        {
-            source: 'set',
-            target: 'map',
-        },
-        {
-            source: 'set',
-            target: 'function',
-        },
-        {
-            source: 'map',
-            target: 'function',
-        },
-        {
-            source: 'function',
-            target: 'map',
-        },
-        {
-            source: 'function',
-            target: 'trigonometricFunction',
-        },
-        {
-            source: 'trigonometricFunction',
-            target: 'sin',
-        },
-        {
-            source: 'trigonometricFunction',
-            target: 'cos',
-        },
-        {
-            source: 'trigonometricFunction',
-            target: 'tan',
-        },
-        {
-            source: 'cos',
-            target: 'cosSimilarity',
-        },
-        {
-            source: 'calculation',
-            target: 'probability',
-        },
-        {
-            source: 'calculation',
-            target: 'permutation',
-        },
-        {
-            source: 'calculation',
-            target: 'combination',
-        },
-        {
-            source: 'probability',
-            target: 'gacha',
-        },
-        {
-            source: 'multiplication',
-            target: 'exponentiation',
-        },
-        {
-            source: 'exponentiation',
-            target: 'log',
-        },
-        {
-            source: 'log',
-            target: 'locationEstimation',
-        },
-        {
-            source: 'set',
-            target: 'graphTheory',
-        },
-        {
-            source: 'graphTheory',
-            target: 'directedGraph',
-        },
-        {
-            source: 'graphTheory',
-            target: 'undirectedGraph',
-        },
-        {
-            source: 'number',
-            target: 'tensor',
-        },
-        {
-            source: 'tensor',
-            target: 'vector',
-        },
-        {
-            source: 'tensor',
-            target: 'matrix',
-        },
-        {
-            source: 'quaternion',
-            target: 'rotation',
-        },
-        {
-            source: 'matrix',
-            target: 'rotationMatrix',
-        },
-        {
-            source: 'rotationMatrix',
-            target: 'rotation',
-        },
-        {
-            source: 'shape',
-            target: 'angle',
-        },
-        {
-            source: 'angle',
-            target: 'eulerAngles',
-        },
-        {
-            source: 'eulerAngles',
-            target: 'rotation',
-        },
-        {
-            source: 'vector',
-            target: 'NLP',
-        },
-        {
-            source: 'e',
-            target: 'compoundInterest',
-        },
-        {
-            source: 'calculation',
-            target: 'limit',
-        },
-        {
-            source: 'math',
-            target: 'ratio',
-        },
-        {
-            source: 'ratio',
-            target: 'trigonometricRatios',
-        },
-        {
-            source: 'trigonometricFunction',
-            target: 'trigonometricRatios',
-        },
-        {
-            source: 'ratio',
-            target: 'goldenRatio',
-        },
-        {
-            source: 'ratio',
-            target: 'silverRatio',
-        },
-        {
-            source: 'goldenRatio',
-            target: 'monaLisa',
-        },
-        {
-            source: 'silverRatio',
-            target: 'paperSizeRatio',
-        },
-        {
-            source: 'irrationalNumber',
-            target: 'goldenRatio',
-        },
-        {
-            source: 'irrationalNumber',
-            target: 'silverRatio',
-        },
-        {
-            source: 'number',
-            target: 'numericalSequence',
-        },
-        {
-            source: 'numericalSequence',
-            target: 'arithmeticSequence',
-        },
-        {
-            source: 'numericalSequence',
-            target: 'geometricSequence',
-        },
-        {
-            source: 'numericalSequence',
-            target: 'fibonacciSequence',
-        },
-        {
-            source: 'fibonacciSequence',
-            target: 'goldenRatio',
-        },
-        {
-            source: 'equality',
-            target: 'recurrenceRelation',
-        },
-        {
-            source: 'numericalSequence',
-            target: 'recurrenceRelation',
-        },
-        {
-            source: 'numericalSequence',
-            target: 'sequenceOfDifferences',
-        },
-        {
-            source: 'addition',
-            target: 'mean',
-        },
-        {
-            source: 'division',
-            target: 'mean',
-        },
-        {
-            source: 'mean',
-            target: 'variance',
-        },
-        {
-            source: 'variance',
-            target: 'covariance',
-        },
-        {
-            source: 'covariance',
-            target: 'correlation',
-        },
-        {
-            source: 'addition',
-            target: 'summation',
-        },
-        {
-            source: 'multiplication',
-            target: 'productOfSequence',
-        },
-        {
-            source: 'summation',
-            target: 'series',
-        },
-        {
-            source: 'series',
-            target: 'taylorSeries',
-        },
-        {
-            source: 'taylorSeries',
-            target: 'maclaurinSeries',
-        },
-        {
-            source: 'series',
-            target: 'fourierSeries',
-        },
-        {
-            source: 'partialDifferentialEquation',
-            target: 'laplaceEquation',
-        },
-        {
-            source: 'partialDifferentialEquation',
-            target: 'diffusionEquation',
-        },
-        {
-            source: 'partialDifferentialEquation',
-            target: 'maxwellEquations',
-        },
-        {
-            source: 'maxwellEquations',
-            target: 'theoryOfRelativity',
-        },
-        {
-            source: 'theoryOfRelativity',
-            target: 'GPS',
-        },
-        {
-            source: 'shape',
-            target: 'plane',
-        },
-        {
-            source: 'shape',
-            target: 'surface',
-        },
-        {
-            source: 'shape',
-            target: 'body',
-        },
-        {
-            source: 'elementaryArithmetic',
-            target: 'area',
-        },
-        {
-            source: 'elementaryArithmetic',
-            target: 'volume',
-        },
-        {
-            source: 'plane',
-            target: 'polygon',
-        },
-        {
-            source: 'plane',
-            target: 'circle',
-        },
-        {
-            source: 'pi',
-            target: 'circle',
-        },
-        {
-            source: 'body',
-            target: 'ball',
-        },
-        {
-            source: 'body',
-            target: 'pyramid',
-        },
-        {
-            source: 'body',
-            target: 'prism',
-        },
-        {
-            source: 'body',
-            target: 'cylinder',
-        },
-        {
-            source: 'body',
-            target: 'cone',
-        },
-        {
-            source: 'ball',
-            target: 'sphere',
-        },
-        {
-            source: 'surface',
-            target: 'sphere',
-        },
-        {
-            source: 'sphere',
-            target: 'sphericalTrigonometry',
-        },
-        {
-            source: 'log',
-            target: 'commonLog',
-        },
-        {
-            source: 'log',
-            target: 'naturalLog',
-        },
-        {
-            source: 'e',
-            target: 'naturalLog',
-        },
-        {
-            source: 'mean',
-            target: 'weightedMean',
-        },
-        {
-            source: 'weightedMean',
-            target: 'expectedValue',
-        },
-        {
-            source: 'probability',
-            target: 'expectedValue',
-        },
-        {
-            source: 'probability',
-            target: 'odds',
-        },
-        {
-            source: 'function',
-            target: 'leastSquaresMethod',
-        },
-        {
-            source: 'number',
-            target: 'variable',
-        },
-        {
-            source: 'number',
-            target: 'constant',
-        },
-        {
-            source: 'constant',
-            target: 'pi',
-        },
-        {
-            source: 'constant',
-            target: 'e',
-        },
-        {
-            source: 'algebraicEquation',
-            target: 'pythagoreanTheorem',
-        },
-        {
-            source: 'algebraicEquation',
-            target: 'fermatLastTheorem',
-        },
-        {
-            source: 'limit',
-            target: 'EDDefinitionOfLimit',
-        },
-        {
-            source: 'number',
-            target: 'squareRoot',
-        },
-        {
-            source: 'area',
-            target: 'squareRoot',
-        },
-        {
-            source: 'polygon',
-            target: 'triangle',
-        },
-        {
-            source: 'triangle',
-            target: 'rightTriangle',
-        },
-        {
-            source: 'triangle',
-            target: 'isoscelesTriangle',
-        },
-        {
-            source: 'isoscelesTriangle',
-            target: 'equilateralTriangle',
-        },
-        {
-            source: 'polygon',
-            target: 'quadrilateral',
-        },
-        {
-            source: 'quadrilateral',
-            target: 'trapezoid',
-        },
-        {
-            source: 'trapezoid',
-            target: 'parallelogram',
-        },
-        {
-            source: 'parallelogram',
-            target: 'rhombus',
-        },
-        {
-            source: 'parallelogram',
-            target: 'rectangle',
-        },
-        {
-            source: 'rhombus',
-            target: 'square',
-        },
-        {
-            source: 'rectangle',
-            target: 'square',
-        },
-        {
-            source: 'square',
-            target: 'squareRoot',
-        },
-        {
-            source: 'rightTriangle',
-            target: 'trigonometricRatios',
-        },
-        {
-            source: 'triangle',
-            target: 'sphericalTrigonometry',
-        },
-        {
-            source: 'variable',
-            target: 'identity',
-        },
-        {
-            source: 'variable',
-            target: 'unknown',
-        },
-        {
-            source: 'unknown',
-            target: 'equation',
-        },
-        {
-            source: 'set',
-            target: 'locus',
-        },
-        {
-            source: 'function',
-            target: 'functionalEquation',
-        },
-        {
-            source: 'function',
-            target: 'graphOfFunction',
-        },
-        {
-            source: 'variable',
-            target: 'function',
-        },
-        {
-            source: 'locus',
-            target: 'trochoid',
-        },
-        {
-            source: 'trochoid',
-            target: 'cycloid',
-        },
-        {
-            source: 'directedGraph',
-            target: 'markovProcess',
-        },
-        {
-            source: 'markovProcess',
-            target: 'markovChain',
-        },
-        {
-            source: 'probability',
-            target: 'randomVariable',
-        },
-        {
-            source: 'randomVariable',
-            target: 'stochasticProcess',
-        },
-        {
-            source: 'stochasticProcess',
-            target: 'wienerProcess',
-        },
-        {
-            source: 'stochasticProcess',
-            target: 'markovProcess',
-        },
-        {
-            source: 'variable',
-            target: 'randomVariable',
-        },
-        {
-            source: 'markovChain',
-            target: 'pageRank',
-        },
-        {
-            source: 'randomVariable',
-            target: 'probabilityDistribution',
-        },
-        {
-            source: 'probabilityDistribution',
-            target: 'discreteProbabilityDistribution',
-        },
-        {
-            source: 'probabilityDistribution',
-            target: 'continuousProbabilityDistribution',
-        },
-        {
-            source: 'discreteProbabilityDistribution',
-            target: 'binomialDistribution',
-        },
-        {
-            source: 'continuousProbabilityDistribution',
-            target: 'normalDistribution',
-        },
-        {
-            source: 'probabilityDistribution',
-            target: 'hypothesisTesting',
-        },
-        {
-            source: 'hypothesisTesting',
-            target: 'parametricHypothesisTesting',
-        },
-        {
-            source: 'hypothesisTesting',
-            target: 'nonParametricHypothesisTesting',
-        },
-        {
-            source: 'parametricHypothesisTesting',
-            target: 'tTest',
-        },
-        {
-            source: 'nonParametricHypothesisTesting',
-            target: 'chiSquaredTest',
-        },
-        {
-            source: 'continuousProbabilityDistribution',
-            target: 'tDistribution',
-        },
-        {
-            source: 'tDistribution',
-            target: 'tTest',
-        },
-        {
-            source: 'hypothesisTesting',
-            target: 'pValue',
-        },
-        {
-            source: 'probability',
-            target: 'lawOfLargeNumbers',
-        },
-        {
-            source: 'lawOfLargeNumbers',
-            target: 'calculateInsurancePremium',
-        },
-        {
-            source: 'probability',
-            target: 'centralLimitTheorem',
-        },
-        {
-            source: 'probability',
-            target: 'conditionalProbability',
-        },
-        {
-            source: 'conditionalProbability',
-            target: 'bayesTheorem',
-        },
-        {
-            source: 'bayesTheorem',
-            target: 'bayesianFilter',
-        },
-        {
-            source: 'bayesianFilter',
-            target: 'spamFilter',
-        },
-        {
-            source: 'circle',
-            target: 'ball',
-        },
-        {
-            source: 'circle',
-            target: 'cone',
-        },
-        {
-            source: 'circle',
-            target: 'cylinder',
-        },
-        {
-            source: 'ratio',
-            target: 'pi',
-        },
-    ],
-};
-
 /**
  * source/targetのnode/edgeのIDを集める関数。
- * @param {Array} collected - array of collected source/target nodeId.
- * @param {Array} uncollected - array of uncollected source/target nodeId.
+ * @param {object} graph - G6 graph.
+ * @param {Array<string>} collected - array of collected source/target nodeId.
+ * @param {Array<string>} uncollected - array of uncollected source/target nodeId.
  * @param {Boolean} isSource - true when collect source nodeId.
  */
-function collectID(collected, uncollected, isSource){
+function collectID(graph, collected, uncollected, isSource){
     const new_uncollected = [];
     for(let neighboringNodeId of uncollected){
         const node = graph.findById(neighboringNodeId);
@@ -1536,171 +34,189 @@ function collectID(collected, uncollected, isSource){
             }
         }
         if(new_uncollected.length > 0){
-            collectID(collected, new_uncollected, isSource);
+            collectID(graph, collected, new_uncollected, isSource);
         }
     }
 };
 
-G6.registerBehavior('custom-activate-relations', {
-    getDefaultCfg(){
-        return {
-            multiple: false,
-            trigger: 'click',
-            activateState: 'selected'
-        }
-    },
-    getEvents(){
-        return {
-            'node:click': 'onNodeClick',
-            'canvas:click': 'onCanvasClick'
-        }
-    },
-    // 全てのノード、エッジの状態を初期状態に戻す。
-    resetState(){
-        graph.findAllByState('node', 'active').forEach(node => {
-            graph.setItemState(node, 'active', false);
-        });
-        graph.findAllByState('edge', 'active').forEach(edge => {
-            graph.setItemState(edge, 'active', false);
-        });
 
-        graph.findAllByState('node', 'nodeState:source').forEach(node => {
-            graph.clearItemStates(node, ['nodeState:source']);
-        });
-        graph.findAllByState('node', 'nodeState:target').forEach(node => {
-            graph.clearItemStates(node, ['nodeState:target']);
-        });
-        graph.findAllByState('node', 'nodeState:irrelevant').forEach(node => {
-            graph.clearItemStates(node, ['nodeState:irrelevant']);
-            this.updateNodeColor(node, 'black');
-        });
-    },
-    // new G6.Graph()のnodeStateStylesなどの箇所でラベルの色の指定をしたかったが、
-    // 反映されなかったので関数にしている。
-    updateNodeColor(node, color){
-        graph.updateItem(node, {
-            labelCfg: {
-                style: {
-                    fill: color
+/**
+ * dataをもとにグラフを書く関数。
+ * @param {object} data - ノードとエッジの情報を持つJSON。
+ */
+function main(data){
+    G6.registerBehavior('custom-activate-relations', {
+        getDefaultCfg(){
+            return {
+                multiple: false,
+                trigger: 'click',
+                activateState: 'selected'
+            }
+        },
+        getEvents(){
+            return {
+                'node:click': 'onNodeClick',
+                'canvas:click': 'onCanvasClick'
+            }
+        },
+        // 全てのノード、エッジの状態を初期状態に戻す。
+        resetState(){
+            graph.findAllByState('node', 'active').forEach(node => {
+                graph.setItemState(node, 'active', false);
+            });
+            graph.findAllByState('edge', 'active').forEach(edge => {
+                graph.setItemState(edge, 'active', false);
+            });
+    
+            graph.findAllByState('node', 'nodeState:source').forEach(node => {
+                graph.clearItemStates(node, ['nodeState:source']);
+            });
+            graph.findAllByState('node', 'nodeState:target').forEach(node => {
+                graph.clearItemStates(node, ['nodeState:target']);
+            });
+            graph.findAllByState('node', 'nodeState:irrelevant').forEach(node => {
+                graph.clearItemStates(node, ['nodeState:irrelevant']);
+                this.updateNodeColor(node, 'black');
+            });
+        },
+        // new G6.Graph()のnodeStateStylesなどの箇所でラベルの色の指定をしたかったが、
+        // 反映されなかったので関数にしている。
+        updateNodeColor(node, color){
+            graph.updateItem(node, {
+                labelCfg: {
+                    style: {
+                        fill: color
+                    }
                 }
+            });
+        },
+        onNodeClick(e){
+            const graph = this.graph;
+            const node = e.item;
+            // Get the configurations by this.
+            // If you do not allow multiple nodes to be 'active', cancel the 'active' state for other nodes
+            if(!this.multiple){
+                this.resetState();
             }
-        });
-    },
-    onNodeClick(e){
-        const graph = this.graph;
-        const node = e.item;
-        // Get the configurations by this.
-        // If you do not allow multiple nodes to be 'active', cancel the 'active' state for other nodes
-        if(!this.multiple){
-            this.resetState();
-        }
-        // activate the clicked node.
-        graph.setItemState(node, 'active', true);
-
-        const uncollected_sources = []
-        const uncollected_targets = []
-
-        const nodeId = node._cfg.id;
-        const edges = node._cfg.edges;
-        for(let edge of edges){
-            const sourceNodeId = edge._cfg.model.source;
-
-            if(sourceNodeId == nodeId){
-                uncollected_targets.push(edge._cfg.model.target);
-            }else{
-                uncollected_sources.push(sourceNodeId);
+            // activate the clicked node.
+            graph.setItemState(node, 'active', true);
+    
+            const uncollected_sources = []
+            const uncollected_targets = []
+    
+            const nodeId = node._cfg.id;
+            const edges = node._cfg.edges;
+            for(let edge of edges){
+                const sourceNodeId = edge._cfg.model.source;
+    
+                if(sourceNodeId == nodeId){
+                    uncollected_targets.push(edge._cfg.model.target);
+                }else{
+                    uncollected_sources.push(sourceNodeId);
+                }
+                graph.setItemState(edge, 'active', true);
             }
-            graph.setItemState(edge, 'active', true);
-        }
-        
-        const sources = [nodeId];
-        collectID(sources, uncollected_sources, true);
-        const targets = [nodeId];
-        collectID(targets, uncollected_targets, false);
-
-        graph.findAll('node', n => {
-            graph.setItemState(n, 'nodeState', 'irrelevant');
-            this.updateNodeColor(n, 'gray');
-        })
-        for(let nodeId of sources){
-            const n = graph.findById(nodeId);
-            graph.setItemState(n, 'nodeState', 'source');
-            this.updateNodeColor(n, 'black');
-        }
-        for(let nodeId of targets){
-            const n = graph.findById(nodeId);
-            graph.setItemState(n, 'nodeState', 'target');
-            this.updateNodeColor(n, 'black');
-        }
-    },
-    onCanvasClick(e){
-        // shouldUpdate can be overrode by users.
-        // Returning true means turning the 'active' to be false for all the nodes.
-        if(this.shouldUpdate(e)){
-            this.resetState();
-        }
-    }
-});
-
-
-const container = document.getElementById('container');
-const width = container.scrollWidth;
-const height = container.scrollHeight || 1000;
-const nodeWidth = 120;
-const nodeHeight = 20;
-const graph = new G6.Graph({
-    container: 'container',
-    width,
-    height,
-    fitView: true,
-    modes: {
-        default: ['drag-canvas', 'drag-node', 'custom-activate-relations'],
-    },
-    layout: {
-        type: 'force',
-        preventOverlap: true,
-        linkDistance: 200,
-    },
-    defaultNode: {
-        size: 40,
-    },
-    nodeStateStyles: {
-        'nodeState:source': {
-            fill: 'yellow',
-            stroke: '#ff8c00',
+            
+            const sources = [nodeId];
+            collectID(graph, sources, uncollected_sources, true);
+            const targets = [nodeId];
+            collectID(graph, targets, uncollected_targets, false);
+    
+            graph.findAll('node', n => {
+                graph.setItemState(n, 'nodeState', 'irrelevant');
+                this.updateNodeColor(n, 'gray');
+            })
+            for(let nodeId of sources){
+                const n = graph.findById(nodeId);
+                graph.setItemState(n, 'nodeState', 'source');
+                this.updateNodeColor(n, 'black');
+            }
+            for(let nodeId of targets){
+                const n = graph.findById(nodeId);
+                graph.setItemState(n, 'nodeState', 'target');
+                this.updateNodeColor(n, 'black');
+            }
         },
-        'nodeState:target': {
-            fill: '#7fff00',
-            stroke: '#006400',
+        onCanvasClick(e){
+            // shouldUpdate can be overrode by users.
+            // Returning true means turning the 'active' to be false for all the nodes.
+            if(this.shouldUpdate(e)){
+                this.resetState();
+            }
+        }
+    });
+    
+    
+    const container = document.getElementById('container');
+    const width = container.scrollWidth;
+    const height = container.scrollHeight || 1000;
+    const graph = new G6.Graph({
+        container: 'container',
+        width,
+        height,
+        fitView: true,
+        modes: {
+            default: ['drag-canvas', 'drag-node', 'custom-activate-relations'],
         },
-        'nodeState:irrelevant': {
-            opacity: 0.5,
+        layout: {
+            type: 'force',
+            preventOverlap: true,
+            linkDistance: 200,
         },
-    },
-    defaultEdge: {
-        type: 'polyline',
-        size: 1,
-        color: '#e2e2e2',
-        style: {
-            endArrow: {
-                path: 'M 0,0 L 8,4 L 8,-4 Z',
-                fill: '#e2e2e2',
+        defaultNode: {
+            size: 40,
+        },
+        nodeStateStyles: {
+            'nodeState:source': {
+                fill: 'yellow',
+                stroke: '#ff8c00',
             },
-            radius: 20,
+            'nodeState:target': {
+                fill: '#7fff00',
+                stroke: '#006400',
+            },
+            'nodeState:irrelevant': {
+                opacity: 0.5,
+            },
         },
-    },
-    edgeStateStyles: {
-        active: {
-            lineWidth: 3,
-        }
-    },
-});
-graph.data(data);
-graph.render();
+        defaultEdge: {
+            type: 'polyline',
+            size: 1,
+            color: '#e2e2e2',
+            style: {
+                endArrow: {
+                    path: 'M 0,0 L 8,4 L 8,-4 Z',
+                    fill: '#e2e2e2',
+                },
+                radius: 20,
+            },
+        },
+        edgeStateStyles: {
+            active: {
+                lineWidth: 3,
+            }
+        },
+    });
+    graph.data(data);
+    graph.render();
+    
+    if (typeof window !== 'undefined')
+        window.onresize = () => {
+            if (!graph || graph.get('destroyed')) return;
+            if (!container || !container.scrollWidth || !container.scrollHeight) return;
+            graph.changeSize(container.scrollWidth, container.scrollHeight);
+        };
+    
+}
 
-if (typeof window !== 'undefined')
-    window.onresize = () => {
-        if (!graph || graph.get('destroyed')) return;
-        if (!container || !container.scrollWidth || !container.scrollHeight) return;
-        graph.changeSize(container.scrollWidth, container.scrollHeight);
-    };
+
+fetch('data.json')
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        main(data);
+    })
+    .catch(error => {
+        console.error(error);
+    });
