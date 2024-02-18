@@ -445,6 +445,10 @@ const data = {
             label: '円柱',
         },
         {
+            id: 'cone',
+            label: '円錐',
+        },
+        {
             id: 'sphere',
             label: '球面',
         },
@@ -535,6 +539,22 @@ const data = {
         {
             id: 'unknown',
             label: '未知数',
+        },
+        {
+            id: 'graphOfFunction',
+            label: '関数のグラフ',
+        },
+        {
+            id: 'locus',
+            label: '軌跡',
+        },
+        {
+            id: 'trochoid',
+            label: 'トロコイド',
+        },
+        {
+            id: 'cycloid',
+            label: 'サイクロイド',
         },
     ],
     edges: [
@@ -1063,6 +1083,10 @@ const data = {
             target: 'cylinder',
         },
         {
+            source: 'body',
+            target: 'cone',
+        },
+        {
             source: 'ball',
             target: 'sphere',
         },
@@ -1205,6 +1229,30 @@ const data = {
         {
             source: 'unknown',
             target: 'equation',
+        },
+        {
+            source: 'set',
+            target: 'locus',
+        },
+        {
+            source: 'function',
+            target: 'functionalEquation',
+        },
+        {
+            source: 'function',
+            target: 'graphOfFunction',
+        },
+        {
+            source: 'variable',
+            target: 'function',
+        },
+        {
+            source: 'locus',
+            target: 'trochoid',
+        },
+        {
+            source: 'trochoid',
+            target: 'cycloid',
         },
     ],
 };
