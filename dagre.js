@@ -556,6 +556,114 @@ const data = {
             id: 'cycloid',
             label: 'サイクロイド',
         },
+        {
+            id: 'odds',
+            label: 'オッズ',
+        },
+        {
+            id: 'directedGraph',
+            label: '有向グラフ',
+        },
+        {
+            id: 'undirectedGraph',
+            label: '無向グラフ',
+        },
+        {
+            id: 'markovProcess',
+            label: 'マルコフ過程',
+        },
+        {
+            id: 'markovChain',
+            label: 'マルコフ連鎖',
+        },
+        {
+            id: 'stochasticProcess',
+            label: '確率過程',
+        },
+        {
+            id: 'wienerProcess',
+            label: 'ウィーナー過程',
+        },
+        {
+            id: 'randomVariable',
+            label: '確率変数',
+        },
+        {
+            id: 'probabilityDistribution',
+            label: '確率分布',
+        },
+        {
+            id: 'discreteProbabilityDistribution',
+            label: '離散確率分布',
+        },
+        {
+            id: 'continuousProbabilityDistribution',
+            label: '連続確率分布',
+        },
+        {
+            id: 'binomialDistribution',
+            label: '二項分布',
+        },
+        {
+            id: 'normalDistribution',
+            label: '正規分布',
+        },
+        {
+            id: 'hypothesisTesting',
+            label: '仮説検定',
+        },
+        {
+            id: 'parametricHypothesisTesting',
+            label: 'パラメトリック検定法',
+        },
+        {
+            id: 'nonParametricHypothesisTesting',
+            label: 'ノンパラメトリック検定法',
+        },
+        {
+            id: 'tTest',
+            label: 't検定',
+        },
+        {
+            id: 'chiSquaredTest',
+            label: 'カイ二乗検定',
+        },
+        {
+            id: 'tDistribution',
+            label: 't分布',
+        },
+        {
+            id: 'pValue',
+            label: 'P値',
+        },
+        {
+            id: 'lawOfLargeNumbers',
+            label: '大数の法則',
+        },
+        {
+            id: 'calculateInsurancePremium',
+            label: '保険料算出',
+        },
+        {
+            id: 'centralLimitTheorem',
+            label: '中心極限定理',
+        },
+        {
+            id: 'conditionalProbability',
+            label: '条件付き確率',
+        },
+        {
+            id: 'bayesTheorem',
+            label: 'ベイズの定理',
+        },
+        {
+            id: 'bayesianFilter',
+            label: 'ベイジアンフィルタ',
+        },
+        {
+            id: 'spamFilter',
+            label: 'スパムフィルタ',
+        },
     ],
     edges: [
         {
@@ -851,6 +959,14 @@ const data = {
             target: 'graphTheory',
         },
         {
+            source: 'graphTheory',
+            target: 'directedGraph',
+        },
+        {
+            source: 'graphTheory',
+            target: 'undirectedGraph',
+        },
+        {
             source: 'number',
             target: 'tensor',
         },
@@ -861,10 +977,6 @@ const data = {
         {
             source: 'tensor',
             target: 'matrix',
-        },
-        {
-            source: 'probability',
-            target: 'pageRank',
         },
         {
             source: 'quaternion',
@@ -1063,8 +1175,8 @@ const data = {
             target: 'circle',
         },
         {
-            source: 'circle',
-            target: 'pi',
+            source: 'pi',
+            target: 'circle',
         },
         {
             source: 'body',
@@ -1121,6 +1233,10 @@ const data = {
         {
             source: 'probability',
             target: 'expectedValue',
+        },
+        {
+            source: 'probability',
+            target: 'odds',
         },
         {
             source: 'function',
@@ -1253,6 +1369,134 @@ const data = {
         {
             source: 'trochoid',
             target: 'cycloid',
+        },
+        {
+            source: 'directedGraph',
+            target: 'markovProcess',
+        },
+        {
+            source: 'markovProcess',
+            target: 'markovChain',
+        },
+        {
+            source: 'probability',
+            target: 'randomVariable',
+        },
+        {
+            source: 'randomVariable',
+            target: 'stochasticProcess',
+        },
+        {
+            source: 'stochasticProcess',
+            target: 'wienerProcess',
+        },
+        {
+            source: 'stochasticProcess',
+            target: 'markovProcess',
+        },
+        {
+            source: 'variable',
+            target: 'randomVariable',
+        },
+        {
+            source: 'markovChain',
+            target: 'pageRank',
+        },
+        {
+            source: 'randomVariable',
+            target: 'probabilityDistribution',
+        },
+        {
+            source: 'probabilityDistribution',
+            target: 'discreteProbabilityDistribution',
+        },
+        {
+            source: 'probabilityDistribution',
+            target: 'continuousProbabilityDistribution',
+        },
+        {
+            source: 'discreteProbabilityDistribution',
+            target: 'binomialDistribution',
+        },
+        {
+            source: 'continuousProbabilityDistribution',
+            target: 'normalDistribution',
+        },
+        {
+            source: 'probabilityDistribution',
+            target: 'hypothesisTesting',
+        },
+        {
+            source: 'hypothesisTesting',
+            target: 'parametricHypothesisTesting',
+        },
+        {
+            source: 'hypothesisTesting',
+            target: 'nonParametricHypothesisTesting',
+        },
+        {
+            source: 'parametricHypothesisTesting',
+            target: 'tTest',
+        },
+        {
+            source: 'nonParametricHypothesisTesting',
+            target: 'chiSquaredTest',
+        },
+        {
+            source: 'continuousProbabilityDistribution',
+            target: 'tDistribution',
+        },
+        {
+            source: 'tDistribution',
+            target: 'tTest',
+        },
+        {
+            source: 'hypothesisTesting',
+            target: 'pValue',
+        },
+        {
+            source: 'probability',
+            target: 'lawOfLargeNumbers',
+        },
+        {
+            source: 'lawOfLargeNumbers',
+            target: 'calculateInsurancePremium',
+        },
+        {
+            source: 'probability',
+            target: 'centralLimitTheorem',
+        },
+        {
+            source: 'probability',
+            target: 'conditionalProbability',
+        },
+        {
+            source: 'conditionalProbability',
+            target: 'bayesTheorem',
+        },
+        {
+            source: 'bayesTheorem',
+            target: 'bayesianFilter',
+        },
+        {
+            source: 'bayesianFilter',
+            target: 'spamFilter',
+        },
+        {
+            source: 'circle',
+            target: 'ball',
+        },
+        {
+            source: 'circle',
+            target: 'cone',
+        },
+        {
+            source: 'circle',
+            target: 'cylinder',
+        },
+        {
+            source: 'ratio',
+            target: 'pi',
         },
     ],
 };
