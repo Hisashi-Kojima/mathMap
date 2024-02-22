@@ -663,6 +663,46 @@
         {
             "id": "spamFilter",
             "label": "スパムフィルタ"
+        },
+        {
+            "id": "trajectoryCalculation",
+            "label": "弾道計算"
+        },
+        {
+            "id": "coordinate",
+            "label": "座標"
+        },
+        {
+            "id": "derivative",
+            "label": "導関数"
+        },
+        {
+            "id": "cavalieriPrinciple",
+            "label": "カヴァリエリの原理"
+        },
+        {
+            "id": "primitiveFunction",
+            "label": "原始関数"
+        },
+        {
+            "id": "estimateRemainingBatteryCapacity",
+            "label": "バッテリー残量測定"
+        },
+        {
+            "id": "calculateOrbitOfComet",
+            "label": "彗星の軌道計算"
+        },
+        {
+            "id": "temperaturePrediction",
+            "label": "体温予測"
+        },
+        {
+            "id": "cherryBlossomForecast",
+            "label": "桜の開花予想"
+        },
+        {
+            "id": "inertialNavigationSystem",
+            "label": "慣性航法装置"
         }
     ],
     "edges": [
@@ -1005,6 +1045,10 @@
         {
             "source": "vector",
             "target": "NLP"
+        },
+        {
+            "source": "vector",
+            "target": "cosSimilarity"
         },
         {
             "source": "e",
@@ -1497,6 +1541,78 @@
         {
             "source": "ratio",
             "target": "pi"
+        },
+        {
+            "source": "differentiation",
+            "target": "trajectoryCalculation"
+        },
+        {
+            "source": "math",
+            "target": "coordinate"
+        },
+        {
+            "source": "coordinate",
+            "target": "trajectoryCalculation"
+        },
+        {
+            "source": "function",
+            "target": "derivative"
+        },
+        {
+            "source": "differentiation",
+            "target": "derivative"
+        },
+        {
+            "source": "cavalieriPrinciple",
+            "target": "area"
+        },
+        {
+            "source": "cavalieriPrinciple",
+            "target": "volume"
+        },
+        {
+            "source": "cavalieriPrinciple",
+            "target": "integration"
+        },
+        {
+            "source": "function",
+            "target": "primitiveFunction"
+        },
+        {
+            "source": "integration",
+            "target": "primitiveFunction"
+        },
+        {
+            "source": "integration",
+            "target": "area"
+        },
+        {
+            "source": "integration",
+            "target": "volume"
+        },
+        {
+            "source": "integration",
+            "target": "estimateRemainingBatteryCapacity"
+        },
+        {
+            "source": "integration",
+            "target": "calculateOrbitOfComet"
+        },
+        {
+            "source": "differentiation",
+            "target": "temperaturePrediction"
+        },
+        {
+            "source": "integration",
+            "target": "cherryBlossomForecast"
+        },
+        {
+            "source": "integration",
+            "target": "inertialNavigationSystem"
+        },
+        {
+            "source": "vector",
+            "target": "inertialNavigationSystem"
         }
     ]
 }
