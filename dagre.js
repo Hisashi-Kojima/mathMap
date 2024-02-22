@@ -1,11 +1,52 @@
+class Edge{
+    /**
+     * ノードを集めるためにエッジを初期化。
+     * @param {object} edge - G6 edge.
+     * @param {Boolean} collectSource - true when collect only source node. false when collect only target node.
+     */
+    constructor(edge, collectSource){
+        this.edge = edge;
+
+        if(collectSource){
+            this.neighboringNodeId = edge._cfg.model.source;
+        }else{
+            this.neighboringNodeId = edge._cfg.model.target;
+        }
+    }
+
+    /**
+     * エッジとノードを集める関数。
+     * @param {object} graph - G6 graph.
+     * @param {object} nodeId - original nodeId.
+     * @param {Array<string>} collected - array of collected source/target nodeId.
+     * @param {Array<string>} new_uncollected - array of uncollected source/target nodeId.
+     */
+    collectEdgeAndNode(graph, nodeId, collected, new_uncollected){
+        // A edge has 2 nodes (source ID and target ID).
+        // One of them is nodeId.
+        if(nodeId != this.neighboringNodeId){
+            graph.setItemState(this.edge, 'active', true);
+
+            // 1. 小数<->実数のようにお互いを指しているパターン
+            // 2. 複数のuncollectedNodeがcollected、uncollectedに含まれていないnodeを指しているパターン
+            // への対応条件
+            if(!collected.includes(this.neighboringNodeId) &&
+               !new_uncollected.includes(this.neighboringNodeId)){
+                new_uncollected.push(this.neighboringNodeId);
+            }
+        }
+    }
+}
+
+
 /**
  * source/targetのnode/edgeのIDを集める関数。
  * @param {object} graph - G6 graph.
  * @param {Array<string>} collected - array of collected source/target nodeId.
  * @param {Array<string>} uncollected - array of uncollected source/target nodeId.
- * @param {Boolean} isSource - true when collect source nodeId.
+ * @param {Boolean} collectSource - true when collect source nodeId.
  */
-function collectID(graph, collected, uncollected, isSource){
+function collectID(graph, collected, uncollected, collectSource){
     const new_uncollected = [];
     for(let neighboringNodeId of uncollected){
         const node = graph.findById(neighboringNodeId);
@@ -14,27 +55,12 @@ function collectID(graph, collected, uncollected, isSource){
         collected.push(nodeId);
 
         const edges = node._cfg.edges;
-        for(let edge of edges){
-            // HACK: classを使えばisSourceの条件分岐が不要になりそう。
-            if(isSource){
-                const sourceId = edge._cfg.model.source;
-                // 1. 小数<->実数のようにお互いを指しているパターン
-                // 2. 複数のuncollectedNodeがcollected、uncollectedに含まれていないnodeを指しているパターン
-                // への対応条件
-                if(!collected.includes(sourceId) && !new_uncollected.includes(sourceId)){
-                    new_uncollected.push(sourceId);
-                    graph.setItemState(edge, 'active', true);
-                }
-            }else{
-                const targetId = edge._cfg.model.target;
-                if(!collected.includes(targetId) && !new_uncollected.includes(targetId)){
-                    new_uncollected.push(targetId);
-                    graph.setItemState(edge, 'active', true);
-                }
-            }
+        for(let raw_edge of edges){
+            const edge = new Edge(raw_edge, collectSource);
+            edge.collectEdgeAndNode(graph, nodeId, collected, new_uncollected);
         }
         if(new_uncollected.length > 0){
-            collectID(graph, collected, new_uncollected, isSource);
+            collectID(graph, collected, new_uncollected, collectSource);
         }
     }
 };
