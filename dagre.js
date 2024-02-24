@@ -223,6 +223,80 @@ function main(data){
             }
         },
     });
+
+    /**
+     * edgeに関する関数。
+     * @param {object} cfg - object about G6 graph.
+     * @param {object} group - object about G6 graph.
+     * @param {string} edgeColor
+     * @param {Boolean} isEqual - true when edge means equal.
+     */
+    function edge(cfg, group, edgeColor, isEqual){
+        const arrowWidth = 8;
+        const arrowLength = 15;
+        const arrowOffset = 0;
+        const startPoint = cfg.startPoint;
+        const endPoint = cfg.endPoint;
+
+        const notEqualArrow = {
+            attrs: {
+                stroke: edgeColor,
+                path: [
+                    ['M', startPoint.x, startPoint.y],
+                    ['L', endPoint.x, endPoint.y],
+                ],
+                endArrow: {
+                    path: G6.Arrow.vee(arrowWidth, arrowLength, arrowOffset),
+                },
+            },
+            // must be assigned in G6 3.3 and later versions. it can be any value you want
+            name: 'line-shape',
+        };
+
+        const equalArrow = {
+            attrs: {
+                stroke: edgeColor,
+                path: [
+                    ['M', startPoint.x, startPoint.y],
+                    ['L', endPoint.x, endPoint.y],
+                ],
+                startArrow: {
+                    path: G6.Arrow.vee(arrowWidth, arrowLength, arrowOffset),
+                },
+                endArrow: {
+                    path: G6.Arrow.vee(arrowWidth, arrowLength, arrowOffset),
+                },
+            },
+            // must be assigned in G6 3.3 and later versions. it can be any value you want
+            name: 'line-shape',
+        };
+
+        if(isEqual){
+            return group.addShape('path', equalArrow);
+        }else{
+            return group.addShape('path', notEqualArrow);
+        }
+    };
+
+    
+    G6.registerEdge('relate', {
+        draw(cfg, group){
+            return edge(cfg, group, 'violet', false);
+        },
+    });
+
+    G6.registerEdge('include', {
+        draw(cfg, group){
+            return edge(cfg, group, 'red', false);
+        },
+    });
+
+    G6.registerEdge('equal', {
+        draw(cfg, group){
+            return edge(cfg, group, 'green', true);
+        },
+    });
+
     graph.data(data);
     graph.render();
     

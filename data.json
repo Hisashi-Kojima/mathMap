@@ -693,7 +693,7 @@
             "label": "彗星の軌道計算"
         },
         {
-            "id": "temperaturePrediction",
+            "id": "bodyTemperaturePrediction",
             "label": "体温予測"
         },
         {
@@ -708,911 +708,1123 @@
     "edges": [
         {
             "source": "math",
-            "target": "number"
+            "target": "number",
+            "type": "include"
         },
         {
             "source": "math",
-            "target": "shape"
+            "target": "shape",
+            "type": "include"
         },
         {
             "source": "number",
-            "target": "quaternion"
+            "target": "quaternion",
+            "type": "include"
         },
         {
             "source": "quaternion",
-            "target": "complexNumber"
+            "target": "complexNumber",
+            "type": "include"
         },
         {
             "source": "complexNumber",
-            "target": "realNumber"
+            "target": "realNumber",
+            "type": "include"
         },
         {
             "source": "complexNumber",
-            "target": "imaginaryNumber"
+            "target": "imaginaryNumber",
+            "type": "include"
         },
         {
             "source": "shape",
-            "target": "area"
+            "target": "area",
+            "type": "relate"
         },
         {
             "source": "shape",
-            "target": "volume"
+            "target": "volume",
+            "type": "relate"
         },
         {
             "source": "realNumber",
-            "target": "rationalNumber"
+            "target": "rationalNumber",
+            "type": "include"
         },
         {
             "source": "realNumber",
-            "target": "irrationalNumber"
+            "target": "irrationalNumber",
+            "type": "include"
         },
         {
             "source": "rationalNumber",
-            "target": "integer"
+            "target": "integer",
+            "type": "include"
         },
         {
             "source": "rationalNumber",
-            "target": "fraction"
+            "target": "fraction",
+            "type": "relate"
         },
         {
             "source": "integer",
-            "target": "oddNumber"
+            "target": "oddNumber",
+            "type": "include"
         },
         {
             "source": "integer",
-            "target": "evenNumber"
+            "target": "evenNumber",
+            "type": "include"
         },
         {
             "source": "integer",
-            "target": "primeNumber"
+            "target": "naturalNumber",
+            "type": "include"
         },
         {
-            "source": "integer",
-            "target": "naturalNumber"
+            "source": "naturalNumber",
+            "target": "primeNumber",
+            "type": "include"
         },
         {
             "source": "realNumber",
-            "target": "decimal"
+            "target": "decimal",
+            "type": "equal"
         },
         {
             "source": "decimal",
-            "target": "realNumber"
+            "target": "repeatingDecimal",
+            "type": "include"
         },
         {
             "source": "decimal",
-            "target": "repeatingDecimal"
-        },
-        {
-            "source": "decimal",
-            "target": "nonRepeatingDecimal"
+            "target": "nonRepeatingDecimal",
+            "type": "include"
         },
         {
             "source": "irrationalNumber",
-            "target": "nonRepeatingDecimal"
+            "target": "nonRepeatingDecimal",
+            "type": "equal"
         },
         {
             "source": "nonRepeatingDecimal",
-            "target": "irrationalNumber"
+            "target": "pi",
+            "type": "include"
         },
         {
             "source": "nonRepeatingDecimal",
-            "target": "pi"
-        },
-        {
-            "source": "nonRepeatingDecimal",
-            "target": "e"
+            "target": "e",
+            "type": "include"
         },
         {
             "source": "complexNumber",
-            "target": "transcendentalNumber"
+            "target": "transcendentalNumber",
+            "type": "include"
         },
         {
             "source": "transcendentalNumber",
-            "target": "pi"
+            "target": "pi",
+            "type": "include"
         },
         {
             "source": "transcendentalNumber",
-            "target": "e"
+            "target": "e",
+            "type": "include"
         },
         {
             "source": "number",
-            "target": "absoluteValue"
+            "target": "absoluteValue",
+            "type": "relate"
         },
         {
             "source": "shape",
-            "target": "distance"
+            "target": "distance",
+            "type": "relate"
         },
         {
             "source": "absoluteValue",
-            "target": "distance"
+            "target": "distance",
+            "type": "relate"
         },
         {
             "source": "math",
-            "target": "expression"
+            "target": "expression",
+            "type": "include"
         },
         {
             "source": "expression",
-            "target": "equality"
+            "target": "equality",
+            "type": "include"
         },
         {
             "source": "expression",
-            "target": "inequality"
+            "target": "inequality",
+            "type": "include"
         },
         {
             "source": "equality",
-            "target": "identity"
+            "target": "identity",
+            "type": "include"
         },
         {
             "source": "equality",
-            "target": "equation"
+            "target": "equation",
+            "type": "include"
         },
         {
             "source": "equation",
-            "target": "algebraicEquation"
+            "target": "algebraicEquation",
+            "type": "include"
         },
         {
             "source": "equation",
-            "target": "functionalEquation"
+            "target": "functionalEquation",
+            "type": "include"
         },
         {
             "source": "functionalEquation",
-            "target": "differentialEquation"
+            "target": "differentialEquation",
+            "type": "include"
         },
         {
             "source": "differentialEquation",
-            "target": "ordinaryDifferentialEquation"
+            "target": "ordinaryDifferentialEquation",
+            "type": "include"
         },
         {
             "source": "differentialEquation",
-            "target": "partialDifferentialEquation"
+            "target": "partialDifferentialEquation",
+            "type": "include"
         },
         {
             "source": "ordinaryDifferentialEquation",
-            "target": "SIRModel"
+            "target": "SIRModel",
+            "type": "relate"
         },
         {
             "source": "primeNumber",
-            "target": "RSACrypto"
+            "target": "RSACrypto",
+            "type": "relate"
         },
         {
             "source": "integer",
-            "target": "congruence"
+            "target": "congruence",
+            "type": "relate"
         },
         {
             "source": "congruence",
-            "target": "RSACrypto"
+            "target": "RSACrypto",
+            "type": "relate"
         },
         {
             "source": "math",
-            "target": "calculation"
+            "target": "calculation",
+            "type": "include"
         },
         {
             "source": "calculation",
-            "target": "elementaryArithmetic"
+            "target": "elementaryArithmetic",
+            "type": "include"
         },
         {
             "source": "elementaryArithmetic",
-            "target": "addition"
+            "target": "addition",
+            "type": "include"
         },
         {
             "source": "elementaryArithmetic",
-            "target": "subtraction"
+            "target": "subtraction",
+            "type": "include"
         },
         {
             "source": "elementaryArithmetic",
-            "target": "multiplication"
+            "target": "multiplication",
+            "type": "include"
         },
         {
             "source": "elementaryArithmetic",
-            "target": "division"
+            "target": "division",
+            "type": "include"
         },
         {
             "source": "division",
-            "target": "modulo"
+            "target": "modulo",
+            "type": "include"
         },
         {
             "source": "modulo",
-            "target": "congruence"
+            "target": "congruence",
+            "type": "relate"
         },
         {
             "source": "calculation",
-            "target": "differentiation"
+            "target": "differentiation",
+            "type": "include"
         },
         {
             "source": "calculation",
-            "target": "integration"
+            "target": "integration",
+            "type": "include"
         },
         {
             "source": "differentiation",
-            "target": "differentialEquation"
+            "target": "differentialEquation",
+            "type": "relate"
         },
         {
             "source": "math",
-            "target": "set"
+            "target": "set",
+            "type": "include"
         },
         {
             "source": "set",
-            "target": "map"
+            "target": "map",
+            "type": "include"
         },
         {
             "source": "set",
-            "target": "function"
+            "target": "function",
+            "type": "include"
         },
         {
             "source": "map",
-            "target": "function"
+            "target": "function",
+            "type": "equal"
         },
         {
             "source": "function",
-            "target": "map"
-        },
-        {
-            "source": "function",
-            "target": "trigonometricFunction"
+            "target": "trigonometricFunction",
+            "type": "include"
         },
         {
             "source": "trigonometricFunction",
-            "target": "sin"
+            "target": "sin",
+            "type": "include"
         },
         {
             "source": "trigonometricFunction",
-            "target": "cos"
+            "target": "cos",
+            "type": "include"
         },
         {
             "source": "trigonometricFunction",
-            "target": "tan"
+            "target": "tan",
+            "type": "include"
         },
         {
             "source": "cos",
-            "target": "cosSimilarity"
+            "target": "cosSimilarity",
+            "type": "relate"
         },
         {
             "source": "calculation",
-            "target": "probability"
+            "target": "probability",
+            "type": "include"
         },
         {
             "source": "calculation",
-            "target": "permutation"
+            "target": "permutation",
+            "type": "include"
         },
         {
             "source": "calculation",
-            "target": "combination"
+            "target": "combination",
+            "type": "include"
         },
         {
             "source": "probability",
-            "target": "gacha"
+            "target": "gacha",
+            "type": "relate"
         },
         {
             "source": "multiplication",
-            "target": "exponentiation"
+            "target": "exponentiation",
+            "type": "include"
         },
         {
             "source": "exponentiation",
-            "target": "log"
+            "target": "log",
+            "type": "relate"
         },
         {
             "source": "log",
-            "target": "locationEstimation"
+            "target": "locationEstimation",
+            "type": "relate"
         },
         {
             "source": "set",
-            "target": "graphTheory"
+            "target": "graphTheory",
+            "type": "include"
         },
         {
             "source": "graphTheory",
-            "target": "directedGraph"
+            "target": "directedGraph",
+            "type": "include"
         },
         {
             "source": "graphTheory",
-            "target": "undirectedGraph"
+            "target": "undirectedGraph",
+            "type": "include"
         },
         {
             "source": "number",
-            "target": "tensor"
+            "target": "tensor",
+            "type": "relate"
         },
         {
             "source": "tensor",
-            "target": "vector"
+            "target": "vector",
+            "type": "include"
         },
         {
             "source": "tensor",
-            "target": "matrix"
+            "target": "matrix",
+            "type": "include"
         },
         {
             "source": "quaternion",
-            "target": "rotation"
+            "target": "rotation",
+            "type": "relate"
         },
         {
             "source": "matrix",
-            "target": "rotationMatrix"
+            "target": "rotationMatrix",
+            "type": "include"
         },
         {
             "source": "rotationMatrix",
-            "target": "rotation"
+            "target": "rotation",
+            "type": "relate"
         },
         {
             "source": "shape",
-            "target": "angle"
+            "target": "angle",
+            "type": "include"
         },
         {
             "source": "angle",
-            "target": "eulerAngles"
+            "target": "eulerAngles",
+            "type": "include"
         },
         {
             "source": "eulerAngles",
-            "target": "rotation"
+            "target": "rotation",
+            "type": "relate"
         },
         {
             "source": "vector",
-            "target": "NLP"
+            "target": "NLP",
+            "type": "relate"
         },
         {
             "source": "vector",
-            "target": "cosSimilarity"
+            "target": "cosSimilarity",
+            "type": "relate"
         },
         {
             "source": "e",
-            "target": "compoundInterest"
+            "target": "compoundInterest",
+            "type": "relate"
         },
         {
             "source": "calculation",
-            "target": "limit"
+            "target": "limit",
+            "type": "relate"
         },
         {
             "source": "math",
-            "target": "ratio"
+            "target": "ratio",
+            "type": "include"
         },
         {
             "source": "ratio",
-            "target": "trigonometricRatios"
+            "target": "trigonometricRatios",
+            "type": "include"
         },
         {
             "source": "trigonometricFunction",
-            "target": "trigonometricRatios"
+            "target": "trigonometricRatios",
+            "type": "include"
         },
         {
             "source": "ratio",
-            "target": "goldenRatio"
+            "target": "goldenRatio",
+            "type": "include"
         },
         {
             "source": "ratio",
-            "target": "silverRatio"
+            "target": "silverRatio",
+            "type": "include"
         },
         {
             "source": "goldenRatio",
-            "target": "monaLisa"
+            "target": "monaLisa",
+            "type": "relate"
         },
         {
             "source": "silverRatio",
-            "target": "paperSizeRatio"
+            "target": "paperSizeRatio",
+            "type": "relate"
         },
         {
             "source": "irrationalNumber",
-            "target": "goldenRatio"
+            "target": "goldenRatio",
+            "type": "include"
         },
         {
             "source": "irrationalNumber",
-            "target": "silverRatio"
+            "target": "silverRatio",
+            "type": "include"
         },
         {
             "source": "number",
-            "target": "numericalSequence"
+            "target": "numericalSequence",
+            "type": "include"
         },
         {
             "source": "numericalSequence",
-            "target": "arithmeticSequence"
+            "target": "arithmeticSequence",
+            "type": "include"
         },
         {
             "source": "numericalSequence",
-            "target": "geometricSequence"
+            "target": "geometricSequence",
+            "type": "include"
         },
         {
             "source": "numericalSequence",
-            "target": "fibonacciSequence"
+            "target": "fibonacciSequence",
+            "type": "include"
         },
         {
             "source": "fibonacciSequence",
-            "target": "goldenRatio"
+            "target": "goldenRatio",
+            "type": "relate"
         },
         {
             "source": "equality",
-            "target": "recurrenceRelation"
+            "target": "recurrenceRelation",
+            "type": "include"
         },
         {
             "source": "numericalSequence",
-            "target": "recurrenceRelation"
+            "target": "recurrenceRelation",
+            "type": "relate"
         },
         {
             "source": "numericalSequence",
-            "target": "sequenceOfDifferences"
+            "target": "sequenceOfDifferences",
+            "type": "include"
         },
         {
             "source": "addition",
-            "target": "mean"
+            "target": "mean",
+            "type": "relate"
         },
         {
             "source": "division",
-            "target": "mean"
+            "target": "mean",
+            "type": "relate"
         },
         {
             "source": "mean",
-            "target": "variance"
+            "target": "variance",
+            "type": "relate"
         },
         {
             "source": "variance",
-            "target": "covariance"
+            "target": "covariance",
+            "type": "relate"
         },
         {
             "source": "covariance",
-            "target": "correlation"
+            "target": "correlation",
+            "type": "relate"
         },
         {
             "source": "addition",
-            "target": "summation"
+            "target": "summation",
+            "type": "include"
         },
         {
             "source": "multiplication",
-            "target": "productOfSequence"
+            "target": "productOfSequence",
+            "type": "include"
         },
         {
             "source": "summation",
-            "target": "series"
+            "target": "series",
+            "type": "include"
         },
         {
             "source": "series",
-            "target": "taylorSeries"
+            "target": "taylorSeries",
+            "type": "include"
         },
         {
             "source": "taylorSeries",
-            "target": "maclaurinSeries"
+            "target": "maclaurinSeries",
+            "type": "include"
         },
         {
             "source": "series",
-            "target": "fourierSeries"
+            "target": "fourierSeries",
+            "type": "include"
         },
         {
             "source": "partialDifferentialEquation",
-            "target": "laplaceEquation"
+            "target": "laplaceEquation",
+            "type": "include"
         },
         {
             "source": "partialDifferentialEquation",
-            "target": "diffusionEquation"
+            "target": "diffusionEquation",
+            "type": "include"
         },
         {
             "source": "partialDifferentialEquation",
-            "target": "maxwellEquations"
+            "target": "maxwellEquations",
+            "type": "include"
         },
         {
             "source": "maxwellEquations",
-            "target": "theoryOfRelativity"
+            "target": "theoryOfRelativity",
+            "type": "relate"
         },
         {
             "source": "theoryOfRelativity",
-            "target": "GPS"
+            "target": "GPS",
+            "type": "relate"
         },
         {
             "source": "shape",
-            "target": "plane"
+            "target": "plane",
+            "type": "include"
         },
         {
             "source": "shape",
-            "target": "surface"
+            "target": "surface",
+            "type": "include"
         },
         {
             "source": "shape",
-            "target": "body"
+            "target": "body",
+            "type": "include"
         },
         {
             "source": "elementaryArithmetic",
-            "target": "area"
+            "target": "area",
+            "type": "relate"
         },
         {
             "source": "elementaryArithmetic",
-            "target": "volume"
+            "target": "volume",
+            "type": "relate"
         },
         {
             "source": "plane",
-            "target": "polygon"
+            "target": "polygon",
+            "type": "include"
         },
         {
             "source": "plane",
-            "target": "circle"
+            "target": "circle",
+            "type": "include"
         },
         {
             "source": "pi",
-            "target": "circle"
+            "target": "circle",
+            "type": "relate"
         },
         {
             "source": "body",
-            "target": "ball"
+            "target": "ball",
+            "type": "include"
         },
         {
             "source": "body",
-            "target": "pyramid"
+            "target": "pyramid",
+            "type": "include"
         },
         {
             "source": "body",
-            "target": "prism"
+            "target": "prism",
+            "type": "include"
         },
         {
             "source": "body",
-            "target": "cylinder"
+            "target": "cylinder",
+            "type": "include"
         },
         {
             "source": "body",
-            "target": "cone"
+            "target": "cone",
+            "type": "include"
         },
         {
             "source": "ball",
-            "target": "sphere"
+            "target": "sphere",
+            "type": "include"
         },
         {
             "source": "surface",
-            "target": "sphere"
+            "target": "sphere",
+            "type": "include"
         },
         {
             "source": "sphere",
-            "target": "sphericalTrigonometry"
+            "target": "sphericalTrigonometry",
+            "type": "relate"
         },
         {
             "source": "log",
-            "target": "commonLog"
+            "target": "commonLog",
+            "type": "include"
         },
         {
             "source": "log",
-            "target": "naturalLog"
+            "target": "naturalLog",
+            "type": "include"
         },
         {
             "source": "e",
-            "target": "naturalLog"
+            "target": "naturalLog",
+            "type": "relate"
         },
         {
             "source": "mean",
-            "target": "weightedMean"
+            "target": "weightedMean",
+            "type": "include"
         },
         {
             "source": "weightedMean",
-            "target": "expectedValue"
+            "target": "expectedValue",
+            "type": "include"
         },
         {
             "source": "probability",
-            "target": "expectedValue"
+            "target": "expectedValue",
+            "type": "relate"
         },
         {
             "source": "probability",
-            "target": "odds"
+            "target": "odds",
+            "type": "relate"
         },
         {
             "source": "function",
-            "target": "leastSquaresMethod"
+            "target": "leastSquaresMethod",
+            "type": "relate"
         },
         {
             "source": "number",
-            "target": "variable"
+            "target": "variable",
+            "type": "include"
         },
         {
             "source": "number",
-            "target": "constant"
+            "target": "constant",
+            "type": "include"
         },
         {
             "source": "constant",
-            "target": "pi"
+            "target": "pi",
+            "type": "include"
         },
         {
             "source": "constant",
-            "target": "e"
+            "target": "e",
+            "type": "include"
         },
         {
             "source": "algebraicEquation",
-            "target": "pythagoreanTheorem"
+            "target": "pythagoreanTheorem",
+            "type": "include"
         },
         {
             "source": "algebraicEquation",
-            "target": "fermatLastTheorem"
+            "target": "fermatLastTheorem",
+            "type": "include"
         },
         {
             "source": "limit",
-            "target": "EDDefinitionOfLimit"
+            "target": "EDDefinitionOfLimit",
+            "type": "include"
         },
         {
             "source": "number",
-            "target": "squareRoot"
+            "target": "squareRoot",
+            "type": "include"
         },
         {
             "source": "area",
-            "target": "squareRoot"
+            "target": "squareRoot",
+            "type": "relate"
         },
         {
             "source": "polygon",
-            "target": "triangle"
+            "target": "triangle",
+            "type": "include"
         },
         {
             "source": "triangle",
-            "target": "rightTriangle"
+            "target": "rightTriangle",
+            "type": "include"
         },
         {
             "source": "triangle",
-            "target": "isoscelesTriangle"
+            "target": "isoscelesTriangle",
+            "type": "include"
         },
         {
             "source": "isoscelesTriangle",
-            "target": "equilateralTriangle"
+            "target": "equilateralTriangle",
+            "type": "include"
         },
         {
             "source": "polygon",
-            "target": "quadrilateral"
+            "target": "quadrilateral",
+            "type": "include"
         },
         {
             "source": "quadrilateral",
-            "target": "trapezoid"
+            "target": "trapezoid",
+            "type": "include"
         },
         {
             "source": "trapezoid",
-            "target": "parallelogram"
+            "target": "parallelogram",
+            "type": "include"
         },
         {
             "source": "parallelogram",
-            "target": "rhombus"
+            "target": "rhombus",
+            "type": "include"
         },
         {
             "source": "parallelogram",
-            "target": "rectangle"
+            "target": "rectangle",
+            "type": "include"
         },
         {
             "source": "rhombus",
-            "target": "square"
+            "target": "square",
+            "type": "include"
         },
         {
             "source": "rectangle",
-            "target": "square"
+            "target": "square",
+            "type": "include"
         },
         {
             "source": "square",
-            "target": "squareRoot"
+            "target": "squareRoot",
+            "type": "relate"
         },
         {
             "source": "rightTriangle",
-            "target": "trigonometricRatios"
+            "target": "trigonometricRatios",
+            "type": "relate"
         },
         {
             "source": "triangle",
-            "target": "sphericalTrigonometry"
+            "target": "sphericalTrigonometry",
+            "type": "relate"
         },
         {
             "source": "variable",
-            "target": "identity"
+            "target": "identity",
+            "type": "relate"
         },
         {
             "source": "variable",
-            "target": "unknown"
+            "target": "unknown",
+            "type": "include"
         },
         {
             "source": "unknown",
-            "target": "equation"
+            "target": "equation",
+            "type": "relate"
         },
         {
             "source": "set",
-            "target": "locus"
+            "target": "locus",
+            "type": "include"
         },
         {
             "source": "function",
-            "target": "functionalEquation"
+            "target": "functionalEquation",
+            "type": "relate"
         },
         {
             "source": "function",
-            "target": "graphOfFunction"
+            "target": "graphOfFunction",
+            "type": "relate"
         },
         {
             "source": "variable",
-            "target": "function"
+            "target": "function",
+            "type": "relate"
         },
         {
             "source": "locus",
-            "target": "trochoid"
+            "target": "trochoid",
+            "type": "include"
         },
         {
             "source": "trochoid",
-            "target": "cycloid"
+            "target": "cycloid",
+            "type": "include"
         },
         {
             "source": "directedGraph",
-            "target": "markovProcess"
+            "target": "markovProcess",
+            "type": "relate"
         },
         {
             "source": "markovProcess",
-            "target": "markovChain"
+            "target": "markovChain",
+            "type": "include"
         },
         {
             "source": "probability",
-            "target": "randomVariable"
-        },
-        {
-            "source": "randomVariable",
-            "target": "stochasticProcess"
-        },
-        {
-            "source": "stochasticProcess",
-            "target": "wienerProcess"
-        },
-        {
-            "source": "stochasticProcess",
-            "target": "markovProcess"
+            "target": "randomVariable",
+            "type": "relate"
         },
         {
             "source": "variable",
-            "target": "randomVariable"
-        },
-        {
-            "source": "markovChain",
-            "target": "pageRank"
+            "target": "randomVariable",
+            "type": "include"
         },
         {
             "source": "randomVariable",
-            "target": "probabilityDistribution"
+            "target": "stochasticProcess",
+            "type": "relate"
+        },
+        {
+            "source": "stochasticProcess",
+            "target": "wienerProcess",
+            "type": "include"
+        },
+        {
+            "source": "stochasticProcess",
+            "target": "markovProcess",
+            "type": "include"
+        },
+        {
+            "source": "markovChain",
+            "target": "pageRank",
+            "type": "relate"
+        },
+        {
+            "source": "randomVariable",
+            "target": "probabilityDistribution",
+            "type": "relate"
         },
         {
             "source": "probabilityDistribution",
-            "target": "discreteProbabilityDistribution"
+            "target": "discreteProbabilityDistribution",
+            "type": "include"
         },
         {
             "source": "probabilityDistribution",
-            "target": "continuousProbabilityDistribution"
+            "target": "continuousProbabilityDistribution",
+            "type": "include"
         },
         {
             "source": "discreteProbabilityDistribution",
-            "target": "binomialDistribution"
+            "target": "binomialDistribution",
+            "type": "include"
         },
         {
             "source": "continuousProbabilityDistribution",
-            "target": "normalDistribution"
+            "target": "normalDistribution",
+            "type": "include"
         },
         {
             "source": "probabilityDistribution",
-            "target": "hypothesisTesting"
+            "target": "hypothesisTesting",
+            "type": "relate"
         },
         {
             "source": "hypothesisTesting",
-            "target": "parametricHypothesisTesting"
+            "target": "parametricHypothesisTesting",
+            "type": "include"
         },
         {
             "source": "hypothesisTesting",
-            "target": "nonParametricHypothesisTesting"
+            "target": "nonParametricHypothesisTesting",
+            "type": "include"
         },
         {
             "source": "parametricHypothesisTesting",
-            "target": "tTest"
+            "target": "tTest",
+            "type": "include"
         },
         {
             "source": "nonParametricHypothesisTesting",
-            "target": "chiSquaredTest"
+            "target": "chiSquaredTest",
+            "type": "include"
         },
         {
             "source": "continuousProbabilityDistribution",
-            "target": "tDistribution"
+            "target": "tDistribution",
+            "type": "include"
         },
         {
             "source": "tDistribution",
-            "target": "tTest"
+            "target": "tTest",
+            "type": "relate"
         },
         {
             "source": "hypothesisTesting",
-            "target": "pValue"
+            "target": "pValue",
+            "type": "relate"
         },
         {
             "source": "probability",
-            "target": "lawOfLargeNumbers"
+            "target": "lawOfLargeNumbers",
+            "type": "relate"
         },
         {
             "source": "lawOfLargeNumbers",
-            "target": "calculateInsurancePremium"
+            "target": "calculateInsurancePremium",
+            "type": "relate"
         },
         {
             "source": "probability",
-            "target": "centralLimitTheorem"
+            "target": "centralLimitTheorem",
+            "type": "relate"
         },
         {
             "source": "probability",
-            "target": "conditionalProbability"
+            "target": "conditionalProbability",
+            "type": "include"
         },
         {
             "source": "conditionalProbability",
-            "target": "bayesTheorem"
+            "target": "bayesTheorem",
+            "type": "relate"
         },
         {
             "source": "bayesTheorem",
-            "target": "bayesianFilter"
+            "target": "bayesianFilter",
+            "type": "relate"
         },
         {
             "source": "bayesianFilter",
-            "target": "spamFilter"
+            "target": "spamFilter",
+            "type": "relate"
         },
         {
             "source": "circle",
-            "target": "ball"
+            "target": "ball",
+            "type": "relate"
         },
         {
             "source": "circle",
-            "target": "cone"
+            "target": "cone",
+            "type": "relate"
         },
         {
             "source": "circle",
-            "target": "cylinder"
+            "target": "cylinder",
+            "type": "relate"
         },
         {
             "source": "ratio",
-            "target": "pi"
+            "target": "pi",
+            "type": "include"
         },
         {
             "source": "differentiation",
-            "target": "trajectoryCalculation"
+            "target": "trajectoryCalculation",
+            "type": "relate"
         },
         {
             "source": "math",
-            "target": "coordinate"
+            "target": "coordinate",
+            "type": "include"
         },
         {
             "source": "coordinate",
-            "target": "trajectoryCalculation"
+            "target": "trajectoryCalculation",
+            "type": "relate"
         },
         {
             "source": "function",
-            "target": "derivative"
+            "target": "derivative",
+            "type": "include"
         },
         {
             "source": "differentiation",
-            "target": "derivative"
+            "target": "derivative",
+            "type": "relate"
         },
         {
             "source": "cavalieriPrinciple",
-            "target": "area"
+            "target": "area",
+            "type": "relate"
         },
         {
             "source": "cavalieriPrinciple",
-            "target": "volume"
+            "target": "volume",
+            "type": "relate"
         },
         {
             "source": "cavalieriPrinciple",
-            "target": "integration"
+            "target": "integration",
+            "type": "relate"
         },
         {
             "source": "function",
-            "target": "primitiveFunction"
+            "target": "primitiveFunction",
+            "type": "include"
         },
         {
             "source": "integration",
-            "target": "primitiveFunction"
+            "target": "primitiveFunction",
+            "type": "relate"
         },
         {
             "source": "integration",
-            "target": "area"
+            "target": "area",
+            "type": "relate"
         },
         {
             "source": "integration",
-            "target": "volume"
+            "target": "volume",
+            "type": "relate"
         },
         {
             "source": "integration",
-            "target": "estimateRemainingBatteryCapacity"
+            "target": "estimateRemainingBatteryCapacity",
+            "type": "relate"
         },
         {
             "source": "integration",
-            "target": "calculateOrbitOfComet"
+            "target": "calculateOrbitOfComet",
+            "type": "relate"
         },
         {
             "source": "differentiation",
-            "target": "temperaturePrediction"
+            "target": "bodyTemperaturePrediction",
+            "type": "relate"
         },
         {
             "source": "integration",
-            "target": "cherryBlossomForecast"
+            "target": "cherryBlossomForecast",
+            "type": "relate"
         },
         {
             "source": "integration",
-            "target": "inertialNavigationSystem"
+            "target": "inertialNavigationSystem",
+            "type": "relate"
         },
         {
             "source": "vector",
-            "target": "inertialNavigationSystem"
+            "target": "inertialNavigationSystem",
+            "type": "relate"
         }
     ]
 }
