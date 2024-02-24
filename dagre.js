@@ -39,6 +39,52 @@ class Edge{
 }
 
 
+class EdgeAttr{
+    /**
+     * init.
+     * @param {string} edgeColor
+     * @param {Boolean} isEqual - true when edge means equal.
+     * @param {Boolean} isActive - true when edge is active.
+     */
+    constructor(edgeColor, isEqual, isActive){
+        this.arrowWidth = 8;
+        this.arrowLength = 15;
+        this.arrowOffset = 0;
+        this.path = G6.Arrow.vee(this.arrowWidth, this.arrowLength, this.arrowOffset);
+
+        this.isEqual = isEqual;
+
+        if(isActive){
+            this.edge = {
+                lineWidth: 3,
+                stroke: edgeColor,
+                endArrow: {
+                    path: this.path,
+                },
+            };
+        }else{
+            this.edge = {
+                lineWidth: 1,
+                stroke: 'gray',
+                opacity: 0.5,
+                endArrow: {
+                    path: this.path,
+                },
+            };
+        }
+    }
+
+    getAttr(){
+        if(this.isEqual){
+            this.edge['startArrow'] = {
+                path: this.path,
+            };
+        }
+        return this.edge;
+    }
+}
+
+
 /**
  * source/targetのnode/edgeのIDを集める関数。
  * @param {object} graph - G6 graph.
@@ -194,112 +240,60 @@ function main(data){
         },
         nodeStateStyles: {
             'nodeState:source': {
-                fill: 'yellow',
-                stroke: '#ff8c00',
+                fill: 'cyan',
+                stroke: 'dodgerblue',
             },
             'nodeState:target': {
-                fill: '#7fff00',
-                stroke: '#006400',
+                fill: 'gold',
+                stroke: 'chocolate',
             },
             'nodeState:irrelevant': {
                 opacity: 0.5,
             },
         },
-        defaultEdge: {
-            type: 'polyline',
-            size: 1,
-            color: '#e2e2e2',
-            style: {
-                endArrow: {
-                    path: 'M 0,0 L 8,4 L 8,-4 Z',
-                    fill: '#e2e2e2',
-                },
-                radius: 20,
-            },
-        },
-        edgeStateStyles: {
-            active: {
-                lineWidth: 3,
-            }
-        },
     });
 
     /**
-     * edgeに関する関数。
-     * @param {object} cfg - object about G6 graph.
-     * @param {object} group - object about G6 graph.
-     * @param {string} edgeColor
+     * edgeを初期化する関数。
+     * @param {string} name - assume only 'active'.
+     * @param {Boolean} value - true when active. false when inactive.
+     * @param {object} item - edge.
+     * @param {string} edgeColor - edge color.
      * @param {Boolean} isEqual - true when edge means equal.
      */
-    function edge(cfg, group, edgeColor, isEqual){
-        const arrowWidth = 8;
-        const arrowLength = 15;
-        const arrowOffset = 0;
-        const startPoint = cfg.startPoint;
-        const endPoint = cfg.endPoint;
-
-        const notEqualArrow = {
-            attrs: {
-                stroke: edgeColor,
-                path: [
-                    ['M', startPoint.x, startPoint.y],
-                    ['L', endPoint.x, endPoint.y],
-                ],
-                endArrow: {
-                    path: G6.Arrow.vee(arrowWidth, arrowLength, arrowOffset),
-                },
-            },
-            // must be assigned in G6 3.3 and later versions. it can be any value you want
-            name: 'line-shape',
-        };
-
-        const equalArrow = {
-            attrs: {
-                stroke: edgeColor,
-                path: [
-                    ['M', startPoint.x, startPoint.y],
-                    ['L', endPoint.x, endPoint.y],
-                ],
-                startArrow: {
-                    path: G6.Arrow.vee(arrowWidth, arrowLength, arrowOffset),
-                },
-                endArrow: {
-                    path: G6.Arrow.vee(arrowWidth, arrowLength, arrowOffset),
-                },
-            },
-            // must be assigned in G6 3.3 and later versions. it can be any value you want
-            name: 'line-shape',
-        };
-
-        if(isEqual){
-            return group.addShape('path', equalArrow);
+    function initState(name, value, item, edgeColor, isEqual){
+        const group = item.get('group');
+        const keyShape = group.find((ele) => ele.get('name') === 'edge-shape');
+        if(name == 'active'){
+            const edgeAttr = new EdgeAttr(edgeColor, isEqual, value);
+            keyShape.attr(edgeAttr.getAttr());
         }else{
-            return group.addShape('path', notEqualArrow);
+            console.log('error in initState().');
+            console.log(name);
         }
-    };
+    }
 
-    
     G6.registerEdge('relate', {
-        draw(cfg, group){
-            return edge(cfg, group, 'violet', false);
+        setState: (name, value, item) => {
+            initState(name, value, item, 'orangered', false);
         },
-    });
+    }, 'relate-line');
 
     G6.registerEdge('include', {
-        draw(cfg, group){
-            return edge(cfg, group, 'red', false);
+        setState: (name, value, item) => {
+            initState(name, value, item, 'purple', false);
         },
-    });
+    }, 'include-line');
 
     G6.registerEdge('equal', {
-        draw(cfg, group){
-            return edge(cfg, group, 'green', true);
+        setState: (name, value, item) => {
+            initState(name, value, item, 'lime', true);
         },
-    });
+    }, 'equal-line');
 
     graph.data(data);
     graph.render();
-    
+
     if (typeof window !== 'undefined')
         window.onresize = () => {
             if (!graph || graph.get('destroyed')) return;
