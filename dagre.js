@@ -294,6 +294,12 @@ function main(data){
     graph.data(data);
     graph.render();
 
+    // init
+    // これがないと最初に表示されるエッジがdefaultのものでアローもない。
+    graph.findAll('edge', (edge) => {
+        graph.setItemState(edge, 'active', false);
+    });
+
     if (typeof window !== 'undefined')
         window.onresize = () => {
             if (!graph || graph.get('destroyed')) return;
