@@ -18,10 +18,11 @@ class Edge{
      * エッジとノードを集める関数。
      * @param {object} graph - G6 graph.
      * @param {object} nodeId - original nodeId.
-     * @param {Array<string>} collected - array of collected source/target nodeId.
-     * @param {Array<string>} new_uncollected - array of uncollected source/target nodeId.
+     * @param {Array<Map<string>>} collected - array of collected source/target nodeId.
+     * @param {Array<Map<string>>} new_uncollected - array of uncollected source/target nodeId.
+     * @param {Number} nodeOpacity - collected node opacity. greater than irrelevant node.
      */
-    collectEdgeAndNode(graph, nodeId, collected, new_uncollected){
+    collectEdgeAndNode(graph, nodeId, collected, new_uncollected, nodeOpacity){
         // A edge has 2 nodes (source ID and target ID).
         // One of them is nodeId.
         if(nodeId != this.neighboringNodeId){
@@ -30,9 +31,12 @@ class Edge{
             // 1. 小数<->実数のようにお互いを指しているパターン
             // 2. 複数のuncollectedNodeがcollected、uncollectedに含まれていないnodeを指しているパターン
             // への対応条件
-            if(!collected.includes(this.neighboringNodeId) &&
-               !new_uncollected.includes(this.neighboringNodeId)){
-                new_uncollected.push(this.neighboringNodeId);
+            const neighboringNodeId = (map) => map.nodeId === this.neighboringNodeId;
+            if(!collected.some(neighboringNodeId) &&
+               !new_uncollected.some(neighboringNodeId)){
+                new_uncollected.push(
+                    {'nodeId': this.neighboringNodeId, 'opacity': nodeOpacity} 
+                );
             }
         }
     }
@@ -84,29 +88,46 @@ class EdgeAttr{
     }
 }
 
+/**
+ * nodeOpacityを計算する関数。
+ * nodeOpacity is greater than irrelevantNodeOpacity.
+ * @param {Number} nodeOpacity - collected node opacity.
+ * @param {Number} irrelevantNodeOpacity - irrelevant node opacity.
+ */
+function calcNodeOpacity(nodeOpacity, irrelevantNodeOpacity){
+    const opacityRange = nodeOpacity - irrelevantNodeOpacity;
+    if (opacityRange <= 0){
+        throw new RangeError('nodeOpacity is less than irrelevantNodeOpacity!');
+    }
+    return irrelevantNodeOpacity + opacityRange * 0.85;
+}
+
 
 /**
  * source/targetのnode/edgeのIDを集める関数。
  * @param {object} graph - G6 graph.
- * @param {Array<string>} collected - array of collected source/target nodeId.
- * @param {Array<string>} uncollected - array of uncollected source/target nodeId.
+ * @param {Array<Map<string>>} collected - array of collected source/target nodeId.
+ * @param {Array<Map<string>>} uncollected - array of uncollected source/target nodeId.
  * @param {Boolean} collectSource - true when collect source nodeId.
+ * @param {Number} nodeOpacity - collected node opacity. greater than irrelevant node.
+ * @param {Number} irrelevantNodeOpacity - irrelevant node opacity.
  */
-function collectID(graph, collected, uncollected, collectSource){
+function collectID(graph, collected, uncollected, collectSource, nodeOpacity, irrelevantNodeOpacity){
     const new_uncollected = [];
-    for(let neighboringNodeId of uncollected){
-        const node = graph.findById(neighboringNodeId);
+    for(let map of uncollected){
+        const node = graph.findById(map.nodeId);
         const nodeId = node._cfg.id;
 
-        collected.push(nodeId);
-
+        collected.push(map);
+        
+        const newNodeOpacity = calcNodeOpacity(nodeOpacity, irrelevantNodeOpacity);
         const edges = node._cfg.edges;
         for(let raw_edge of edges){
             const edge = new Edge(raw_edge, collectSource);
-            edge.collectEdgeAndNode(graph, nodeId, collected, new_uncollected);
+            edge.collectEdgeAndNode(graph, nodeId, collected, new_uncollected, newNodeOpacity);
         }
         if(new_uncollected.length > 0){
-            collectID(graph, collected, new_uncollected, collectSource);
+            collectID(graph, collected, new_uncollected, collectSource, newNodeOpacity, irrelevantNodeOpacity);
         }
     }
 };
@@ -117,6 +138,7 @@ function collectID(graph, collected, uncollected, collectSource){
  * @param {object} data - ノードとエッジの情報を持つJSON。
  */
 function main(data){
+    const irrelevantNodeOpacity = 0.5;
     G6.registerBehavior('custom-activate-relations', {
         getDefaultCfg(){
             return {
@@ -142,13 +164,15 @@ function main(data){
     
             graph.findAllByState('node', 'nodeState:source').forEach(node => {
                 graph.clearItemStates(node, ['nodeState:source']);
+                this.updateNode(node, 1);
             });
             graph.findAllByState('node', 'nodeState:target').forEach(node => {
                 graph.clearItemStates(node, ['nodeState:target']);
+                this.updateNode(node, 1);
             });
             graph.findAllByState('node', 'nodeState:irrelevant').forEach(node => {
                 graph.clearItemStates(node, ['nodeState:irrelevant']);
-                this.updateNodeColor(node, 'black');
+                this.updateNode(node, 1);
             });
         },
         // new G6.Graph()のnodeStateStylesなどの箇所でラベルの色の指定をしたかったが、
@@ -158,6 +182,20 @@ function main(data){
                 labelCfg: {
                     style: {
                         fill: color
+                    }
+                }
+            });
+        },
+        // もとのnodeから離れているほどnode文字と透過率を薄くしている。
+        updateNode(node, opacity){
+            const color_num = Math.floor((1 - opacity) * 255);
+            const color_hex = color_num.toString(16);
+            const color = '#' + color_hex + color_hex + color_hex;
+            graph.updateItem(node, {
+                labelCfg: {
+                    style: {
+                        fill: color,
+                        opacity: opacity
                     }
                 }
             });
@@ -178,35 +216,43 @@ function main(data){
     
             const nodeId = node._cfg.id;
             const edges = node._cfg.edges;
+            const nodeOpacity = calcNodeOpacity(1, irrelevantNodeOpacity);
             for(let edge of edges){
                 const sourceNodeId = edge._cfg.model.source;
     
                 if(sourceNodeId == nodeId){
-                    uncollected_targets.push(edge._cfg.model.target);
+                    uncollected_targets.push({
+                        'nodeId': edge._cfg.model.target,
+                        'opacity': nodeOpacity
+                    });
                 }else{
-                    uncollected_sources.push(sourceNodeId);
+                    uncollected_sources.push({
+                        'nodeId': sourceNodeId,
+                        'opacity': nodeOpacity
+                    });
                 }
                 graph.setItemState(edge, 'active', true);
             }
             
-            const sources = [nodeId];
-            collectID(graph, sources, uncollected_sources, true);
-            const targets = [nodeId];
-            collectID(graph, targets, uncollected_targets, false);
+            const firstNodeMap = {'nodeId': nodeId, 'opacity': 1};
+            const sources = [firstNodeMap];
+            collectID(graph, sources, uncollected_sources, true, nodeOpacity, irrelevantNodeOpacity);
+            const targets = [firstNodeMap];
+            collectID(graph, targets, uncollected_targets, false, nodeOpacity, irrelevantNodeOpacity);
     
             graph.findAll('node', n => {
                 graph.setItemState(n, 'nodeState', 'irrelevant');
                 this.updateNodeColor(n, 'gray');
-            })
-            for(let nodeId of sources){
-                const n = graph.findById(nodeId);
+            });
+            for(let map of sources){
+                const n = graph.findById(map.nodeId);
                 graph.setItemState(n, 'nodeState', 'source');
-                this.updateNodeColor(n, 'black');
+                this.updateNode(n, map.opacity);
             }
-            for(let nodeId of targets){
-                const n = graph.findById(nodeId);
+            for(let map of targets){
+                const n = graph.findById(map.nodeId);
                 graph.setItemState(n, 'nodeState', 'target');
-                this.updateNodeColor(n, 'black');
+                this.updateNode(n, map.opacity);
             }
         },
         onCanvasClick(e){
@@ -248,7 +294,7 @@ function main(data){
                 stroke: 'chocolate',
             },
             'nodeState:irrelevant': {
-                opacity: 0.5,
+                opacity: irrelevantNodeOpacity,
             },
         },
     });
