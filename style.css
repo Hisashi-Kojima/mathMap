@@ -1,0 +1,12 @@
+.g6-component-contextmenu > ul{
+    margin: 0.2em 0.2em;
+    padding-left: 0;
+}
+
+.g6-component-contextmenu li{
+    list-style: none;
+}
+
+.g6-component-contextmenu li:hover{
+    font-weight: bold;
+}

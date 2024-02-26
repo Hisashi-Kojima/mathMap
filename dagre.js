@@ -1,3 +1,7 @@
+const includeColor = 'purple';
+const relateColor = 'orangered';
+const equalColor = 'lime';
+
 class Edge{
     /**
      * ノードを集めるためにエッジを初期化。
@@ -133,11 +137,7 @@ function collectID(graph, collected, uncollected, collectSource, nodeOpacity, ir
 };
 
 
-/**
- * dataをもとにグラフを書く関数。
- * @param {object} data - ノードとエッジの情報を持つJSON。
- */
-function main(data){
+function getLegend(){
     const legendData = {
         edges: [
             {
@@ -146,7 +146,7 @@ function main(data){
                 order: 0,
                 style: {
                     width: 30,
-                    stroke: 'purple',
+                    stroke: includeColor,
                     endArrow: true
                 }
             },
@@ -156,7 +156,7 @@ function main(data){
                 order: 1,
                 style: {
                     width: 30,
-                    stroke: 'orangered',
+                    stroke: relateColor,
                     endArrow: true
                 }
             },
@@ -166,19 +166,55 @@ function main(data){
                 order: 2,
                 style: {
                     width: 30,
-                    stroke: 'lime',
+                    stroke: equalColor,
                     startArrow: true,
                     endArrow: true
                 }
             },
         ]
     };
-    const legend = new G6.Legend({
+    return new G6.Legend({
         data: legendData,
         containerStyle: {
             fill: 'lavender'
         }
     });
+}
+
+
+function getNodeMenu(){
+    return new G6.Menu({
+        // position offset of menu upper left corner.
+        offsetX: 10,
+        offsetY: -50,
+        itemTypes: ['node'],
+        getContent(e) {
+            return `<ul>
+                <li>このノードを隠す</li>
+                <li>小学校レベルまで表示</li>
+                <li>中学校レベルまで表示</li>
+                <li>高校レベルまで表示</li>
+                <li>すべて表示</li>
+                <li>この項目について</li>
+            </ul>`;
+        },
+        handleMenuClick(target, item) {
+            if('この項目について' == target.textContent){
+                const nodeId = item._cfg.id;
+                window.location.href = nodeId + '.html';
+            }
+        },
+    });
+}
+
+
+/**
+ * dataをもとにグラフを書く関数。
+ * @param {object} data - ノードとエッジの情報を持つJSON。
+ */
+function main(data){
+    const legend = getLegend();
+    const nodeMenu = getNodeMenu();
 
     const irrelevantNodeOpacity = 0.5;
     G6.registerBehavior('custom-activate-relations', {
@@ -339,7 +375,7 @@ function main(data){
                 opacity: irrelevantNodeOpacity,
             },
         },
-        plugins: [legend],
+        plugins: [legend, nodeMenu],
     });
 
     /**
@@ -364,19 +400,19 @@ function main(data){
 
     G6.registerEdge('relate', {
         setState: (name, value, item) => {
-            initState(name, value, item, 'orangered', false);
+            initState(name, value, item, relateColor, false);
         },
     }, 'relate-line');
 
     G6.registerEdge('include', {
         setState: (name, value, item) => {
-            initState(name, value, item, 'purple', false);
+            initState(name, value, item, includeColor, false);
         },
     }, 'include-line');
 
     G6.registerEdge('equal', {
         setState: (name, value, item) => {
-            initState(name, value, item, 'lime', true);
+            initState(name, value, item, equalColor, true);
         },
     }, 'equal-line');
 
