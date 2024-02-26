@@ -138,6 +138,48 @@ function collectID(graph, collected, uncollected, collectSource, nodeOpacity, ir
  * @param {object} data - ノードとエッジの情報を持つJSON。
  */
 function main(data){
+    const legendData = {
+        edges: [
+            {
+                id: "include",
+                label: "包含",
+                order: 0,
+                style: {
+                    width: 30,
+                    stroke: 'purple',
+                    endArrow: true
+                }
+            },
+            {
+                id: "relate",
+                label: "関連",
+                order: 1,
+                style: {
+                    width: 30,
+                    stroke: 'orangered',
+                    endArrow: true
+                }
+            },
+            {
+                id: "equal",
+                label: "同値",
+                order: 2,
+                style: {
+                    width: 30,
+                    stroke: 'lime',
+                    startArrow: true,
+                    endArrow: true
+                }
+            },
+        ]
+    };
+    const legend = new G6.Legend({
+        data: legendData,
+        containerStyle: {
+            fill: 'lavender'
+        }
+    });
+
     const irrelevantNodeOpacity = 0.5;
     G6.registerBehavior('custom-activate-relations', {
         getDefaultCfg(){
@@ -297,6 +339,7 @@ function main(data){
                 opacity: irrelevantNodeOpacity,
             },
         },
+        plugins: [legend],
     });
 
     /**
