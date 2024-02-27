@@ -134,7 +134,112 @@ function collectID(graph, collected, uncollected, collectSource, nodeOpacity, ir
             collectID(graph, collected, new_uncollected, collectSource, newNodeOpacity, irrelevantNodeOpacity);
         }
     }
-};
+}
+
+
+// new G6.Graph()のnodeStateStylesなどの箇所でラベルの色の指定をしたかったが、
+// 反映されなかったので関数にしている。
+function updateNodeColor(graph, node, color){
+    graph.updateItem(node, {
+        labelCfg: {
+            style: {
+                fill: color
+            }
+        }
+    });
+}
+
+// もとのnodeから離れているほどnode文字と透過率を薄くしている。
+function updateNode(graph, node, opacity){
+    const color_num = Math.floor((1 - opacity) * 255);
+    const color_hex = color_num.toString(16);
+    const color = '#' + color_hex + color_hex + color_hex;
+    graph.updateItem(node, {
+        labelCfg: {
+            style: {
+                fill: color,
+                opacity: opacity
+            }
+        }
+    });
+}
+
+
+/**
+ * 概念同士の関係性を見やすくする関数。
+ * @param {object} graph - G6 graph.
+ * @param {object} node - clicked node.
+ * @param {Number} irrelevantNodeOpacity - 無関係なノードのopacity。
+ */
+function visualizeRelationship(graph, node, irrelevantNodeOpacity){
+    const uncollected_sources = []
+    const uncollected_targets = []
+
+    const nodeId = node._cfg.id;
+    const edges = node._cfg.edges;
+    const nodeOpacity = calcNodeOpacity(1, irrelevantNodeOpacity);
+    for(let edge of edges){
+        const sourceNodeId = edge._cfg.model.source;
+
+        if(sourceNodeId == nodeId){
+            uncollected_targets.push({
+                'nodeId': edge._cfg.model.target,
+                'opacity': nodeOpacity
+            });
+        }else{
+            uncollected_sources.push({
+                'nodeId': sourceNodeId,
+                'opacity': nodeOpacity
+            });
+        }
+        graph.setItemState(edge, 'active', true);
+    }
+    
+    const firstNodeMap = {'nodeId': nodeId, 'opacity': 1};
+    const sources = [firstNodeMap];
+    collectID(graph, sources, uncollected_sources, true, nodeOpacity, irrelevantNodeOpacity);
+    const targets = [firstNodeMap];
+    collectID(graph, targets, uncollected_targets, false, nodeOpacity, irrelevantNodeOpacity);
+
+    graph.findAll('node', n => {
+        graph.setItemState(n, 'nodeState', 'irrelevant');
+        updateNodeColor(graph, n, 'gray');
+    });
+    for(let map of sources){
+        const n = graph.findById(map.nodeId);
+        graph.setItemState(n, 'nodeState', 'source');
+        updateNode(graph, n, map.opacity);
+    }
+    for(let map of targets){
+        const n = graph.findById(map.nodeId);
+        graph.setItemState(n, 'nodeState', 'target');
+        updateNode(graph, n, map.opacity);
+    }
+}
+
+
+// 全てのノード、エッジの状態を初期状態に戻す。
+function resetState(graph){
+    graph.findAllByState('node', 'active').forEach(node => {
+        graph.setItemState(node, 'active', false);
+    });
+    graph.findAllByState('edge', 'active').forEach(edge => {
+        graph.setItemState(edge, 'active', false);
+    });
+
+    graph.findAllByState('node', 'nodeState:source').forEach(node => {
+        graph.clearItemStates(node, ['nodeState:source']);
+        updateNode(graph, node, 1);
+    });
+    graph.findAllByState('node', 'nodeState:target').forEach(node => {
+        graph.clearItemStates(node, ['nodeState:target']);
+        updateNode(graph, node, 1);
+    });
+    graph.findAllByState('node', 'nodeState:irrelevant').forEach(node => {
+        graph.clearItemStates(node, ['nodeState:irrelevant']);
+        updateNode(graph, node, 1);
+    });
+}
 
 
 function getLegend(){
@@ -199,9 +304,11 @@ function getNodeMenu(){
             </ul>`;
         },
         handleMenuClick(target, item) {
-            if('この項目について' == target.textContent){
-                const nodeId = item._cfg.id;
-                window.location.href = nodeId + '.html';
+            switch(target.textContent){
+                case 'この項目について':
+                    const nodeId = item._cfg.id;
+                    window.location.href = nodeId + '.html';
+                    break;
             }
         },
     });
@@ -231,113 +338,22 @@ function main(data){
                 'canvas:click': 'onCanvasClick'
             }
         },
-        // 全てのノード、エッジの状態を初期状態に戻す。
-        resetState(){
-            graph.findAllByState('node', 'active').forEach(node => {
-                graph.setItemState(node, 'active', false);
-            });
-            graph.findAllByState('edge', 'active').forEach(edge => {
-                graph.setItemState(edge, 'active', false);
-            });
-    
-            graph.findAllByState('node', 'nodeState:source').forEach(node => {
-                graph.clearItemStates(node, ['nodeState:source']);
-                this.updateNode(node, 1);
-            });
-            graph.findAllByState('node', 'nodeState:target').forEach(node => {
-                graph.clearItemStates(node, ['nodeState:target']);
-                this.updateNode(node, 1);
-            });
-            graph.findAllByState('node', 'nodeState:irrelevant').forEach(node => {
-                graph.clearItemStates(node, ['nodeState:irrelevant']);
-                this.updateNode(node, 1);
-            });
-        },
-        // new G6.Graph()のnodeStateStylesなどの箇所でラベルの色の指定をしたかったが、
-        // 反映されなかったので関数にしている。
-        updateNodeColor(node, color){
-            graph.updateItem(node, {
-                labelCfg: {
-                    style: {
-                        fill: color
-                    }
-                }
-            });
-        },
-        // もとのnodeから離れているほどnode文字と透過率を薄くしている。
-        updateNode(node, opacity){
-            const color_num = Math.floor((1 - opacity) * 255);
-            const color_hex = color_num.toString(16);
-            const color = '#' + color_hex + color_hex + color_hex;
-            graph.updateItem(node, {
-                labelCfg: {
-                    style: {
-                        fill: color,
-                        opacity: opacity
-                    }
-                }
-            });
-        },
         onNodeClick(e){
-            const graph = this.graph;
             const node = e.item;
             // Get the configurations by this.
             // If you do not allow multiple nodes to be 'active', cancel the 'active' state for other nodes
             if(!this.multiple){
-                this.resetState();
+                resetState(graph);
             }
             // activate the clicked node.
             graph.setItemState(node, 'active', true);
-    
-            const uncollected_sources = []
-            const uncollected_targets = []
-    
-            const nodeId = node._cfg.id;
-            const edges = node._cfg.edges;
-            const nodeOpacity = calcNodeOpacity(1, irrelevantNodeOpacity);
-            for(let edge of edges){
-                const sourceNodeId = edge._cfg.model.source;
-    
-                if(sourceNodeId == nodeId){
-                    uncollected_targets.push({
-                        'nodeId': edge._cfg.model.target,
-                        'opacity': nodeOpacity
-                    });
-                }else{
-                    uncollected_sources.push({
-                        'nodeId': sourceNodeId,
-                        'opacity': nodeOpacity
-                    });
-                }
-                graph.setItemState(edge, 'active', true);
-            }
-            
-            const firstNodeMap = {'nodeId': nodeId, 'opacity': 1};
-            const sources = [firstNodeMap];
-            collectID(graph, sources, uncollected_sources, true, nodeOpacity, irrelevantNodeOpacity);
-            const targets = [firstNodeMap];
-            collectID(graph, targets, uncollected_targets, false, nodeOpacity, irrelevantNodeOpacity);
-    
-            graph.findAll('node', n => {
-                graph.setItemState(n, 'nodeState', 'irrelevant');
-                this.updateNodeColor(n, 'gray');
-            });
-            for(let map of sources){
-                const n = graph.findById(map.nodeId);
-                graph.setItemState(n, 'nodeState', 'source');
-                this.updateNode(n, map.opacity);
-            }
-            for(let map of targets){
-                const n = graph.findById(map.nodeId);
-                graph.setItemState(n, 'nodeState', 'target');
-                this.updateNode(n, map.opacity);
-            }
+            visualizeRelationship(graph, node, irrelevantNodeOpacity);
         },
         onCanvasClick(e){
             // shouldUpdate can be overrode by users.
             // Returning true means turning the 'active' to be false for all the nodes.
             if(this.shouldUpdate(e)){
-                this.resetState();
+                resetState(graph);
             }
         }
     });
