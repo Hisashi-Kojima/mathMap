@@ -30,7 +30,7 @@ class Edge{
         // A edge has 2 nodes (source ID and target ID).
         // One of them is nodeId.
         if(nodeId != this.neighboringNodeId){
-            graph.setItemState(this.edge, 'active', true);
+            changeEdgeState(graph, this.edge, true);
 
             // 1. 小数<->実数のようにお互いを指しているパターン
             // 2. 複数のuncollectedNodeがcollected、uncollectedに含まれていないnodeを指しているパターン
@@ -50,11 +50,9 @@ class Edge{
 class EdgeAttr{
     /**
      * init.
-     * @param {string} edgeColor
      * @param {Boolean} isEqual - true when edge means equal.
-     * @param {Boolean} isActive - true when edge is active.
      */
-    constructor(edgeColor, isEqual, isActive){
+    constructor(isEqual){
         this.arrowWidth = 8;
         this.arrowLength = 15;
         this.arrowOffset = 0;
@@ -62,29 +60,21 @@ class EdgeAttr{
 
         this.isEqual = isEqual;
 
-        if(isActive){
-            this.edge = {
-                lineWidth: 3,
-                stroke: edgeColor,
-                endArrow: {
-                    path: this.path,
-                },
-            };
-        }else{
-            this.edge = {
-                lineWidth: 1,
-                stroke: 'gray',
-                opacity: 0.5,
-                endArrow: {
-                    path: this.path,
-                },
-            };
-        }
+        this.edge = {
+            lineWidth: 1,
+            stroke: 'gray',
+            opacity: 0.5,
+            startArrow: false,
+            endArrow: {
+                path: this.path,
+            },
+            path: this.path,
+        };
     }
 
     getAttr(){
         if(this.isEqual){
-            this.edge['startArrow'] = {
+            this.edge.startArrow = {
                 path: this.path,
             };
         }
@@ -132,6 +122,30 @@ function collectID(graph, collected, uncollected, collectSource, nodeOpacity, ir
         }
         if(new_uncollected.length > 0){
             collectID(graph, collected, new_uncollected, collectSource, newNodeOpacity, irrelevantNodeOpacity);
+        }
+    }
+}
+
+
+/**
+ * graph.setItemState()を呼び出す回数を最小限に抑える関数。
+ * setItemState()を呼び出すと、定義していればsetState()も呼び出される。
+ * 定義していなくても呼び出されはするのかも。
+ * setState()を定義していない場合はsetState()に関しては当然何も起こらない。
+ * @param {object} graph - G6 graph.
+ * @param {object} edge - G6 edge.
+ * @param {Boolean} activate - true when want to activate.
+ */
+function changeEdgeState(graph, edge, activate){
+    const edgeType = edge._cfg.model.type;
+
+    if(!edge._cfg.states.includes('active')){
+        if(activate){
+            graph.setItemState(edge, 'edgeState', edgeType);
+        }
+    }else{
+        if(!activate){
+            graph.setItemState(edge, 'edgeState', 'inactive');
         }
     }
 }
@@ -192,7 +206,7 @@ function visualizeRelationship(graph, node, irrelevantNodeOpacity){
                 'opacity': nodeOpacity
             });
         }
-        graph.setItemState(edge, 'active', true);
+        changeEdgeState(graph, edge, true);
     }
     
     const firstNodeMap = {'nodeId': nodeId, 'opacity': 1};
@@ -217,14 +231,109 @@ function visualizeRelationship(graph, node, irrelevantNodeOpacity){
     }
 }
 
+/**
+ * 2つのエッジから1つのエッジを作る関数。
+ * (source node) (from edge)  (node)  (to edge) (target node)
+ *      O             ->        O        ->          O
+ * 
+ * @param {object} fromEdge
+ * @param {object} toEdge
+ */
+function createNewEdgeModel(fromEdge, toEdge){
+    const fromModel = fromEdge._cfg.model;
+    const toModel = toEdge._cfg.model;
+
+    const sourceNodeId = fromModel.source;
+    const targetNodeId = toModel.target;
+    const new_model = {
+        id: sourceNodeId+'-'+targetNodeId,
+        source: sourceNodeId,
+        target: targetNodeId
+    };
+    
+    switch(toModel.type){
+        case 'relate':
+            new_model.type = toModel.type;
+            new_model.style = toModel.style;
+            break;
+        case 'equal':
+            new_model.type = fromModel.type;
+            new_model.style = fromModel.style;
+            break;
+        default:
+            // toModelがincludeの場合
+            if(fromModel.type == 'relate'){
+                new_model.type = fromModel.type;
+                new_model.style = fromModel.style;
+            }else{
+                new_model.type = toModel.type;
+                new_model.style = toModel.style;
+            }
+    }
+
+    return new_model;
+}
+
+/**
+ * 複数のエッジから複数のエッジを作る関数。
+ * @param {object} fromEdges
+ * @param {object} toEdges
+ */
+function createNewEdges(fromEdges, toEdges){
+    const new_edge_models = [];
+    for(let fromEdge of fromEdges){
+        for(let toEdge of toEdges){
+            new_edge_models.push(createNewEdgeModel(fromEdge, toEdge));
+        }
+    }
+    return new_edge_models;
+}
+
+/**
+ * エッジをfromEdgeとtoEdgeに分別する関数。
+ * @param {Object} node
+ */
+function separateEdge(node){
+    const fromEdges = [];
+    const toEdges = [];
+    const edges = node._cfg.edges;
+    for(let edge of edges){
+        if(edge._cfg.sourceNode === node){
+            toEdges.push(edge);
+        }else{
+            fromEdges.push(edge);
+        }
+    }
+    return {fromEdges: fromEdges, toEdges: toEdges};
+}
+
+/**
+ * ノードを消して周囲のエッジを繋ぎ直す関数。
+ * @param {object} graph - G6 graph.
+ * @param {object} node
+ */
+function hideNode(graph, node){
+    graph.hideItem(node);
+    // エッジを集める。
+    const edges = separateEdge(node);
+    const fromEdges = edges['fromEdges'];
+    const toEdges = edges['toEdges'];
+    const new_edge_models = createNewEdges(fromEdges, toEdges);
+    for(let model of new_edge_models){
+        graph.addItem('edge', model);
+    }
+    // TODO: エッジにスタイルを適用するためにリフレッシュが必要。
+    const new_edge = graph.findById(new_edge_models[0].id);
+}
+
 
 // 全てのノード、エッジの状態を初期状態に戻す。
 function resetState(graph){
     graph.findAllByState('node', 'active').forEach(node => {
         graph.setItemState(node, 'active', false);
     });
-    graph.findAllByState('edge', 'active').forEach(edge => {
-        graph.setItemState(edge, 'active', false);
+    graph.findAll('edge', (edge) => {
+        graph.setItemState(edge, 'edgeState', 'inactive');
     });
 
     graph.findAllByState('node', 'nodeState:source').forEach(node => {
@@ -303,8 +412,11 @@ function getNodeMenu(){
                 <li>この項目について</li>
             </ul>`;
         },
-        handleMenuClick(target, item) {
+        handleMenuClick(target, item, graph) {
             switch(target.textContent){
+                case 'このノードを隠す':
+                    hideNode(graph, item);
+                    break;
                 case 'この項目について':
                     const nodeId = item._cfg.id;
                     window.location.href = nodeId + '.html';
@@ -391,55 +503,67 @@ function main(data){
                 opacity: irrelevantNodeOpacity,
             },
         },
+        edgeStateStyles: {
+            'edgeState:relate': {
+                stroke: relateColor,
+                lineWidth: 3,
+                opacity: 1,
+            },
+            'edgeState:include': {
+                stroke: includeColor,
+                lineWidth: 3,
+                opacity: 1,
+            },
+            'edgeState:equal': {
+                stroke: equalColor,
+                lineWidth: 3,
+                opacity: 1,
+            },
+            'edgeState:inactive': {
+                stroke: 'gray',
+                lineWidth: 1,
+                opacity: 0.5,
+            },
+        },
         plugins: [legend, nodeMenu],
     });
 
-    /**
-     * edgeを初期化する関数。
-     * @param {string} name - assume only 'active'.
-     * @param {Boolean} value - true when active. false when inactive.
-     * @param {object} item - edge.
-     * @param {string} edgeColor - edge color.
-     * @param {Boolean} isEqual - true when edge means equal.
-     */
-    function initState(name, value, item, edgeColor, isEqual){
-        const group = item.get('group');
-        const keyShape = group.find((ele) => ele.get('name') === 'edge-shape');
-        if(name == 'active'){
-            const edgeAttr = new EdgeAttr(edgeColor, isEqual, value);
-            keyShape.attr(edgeAttr.getAttr());
-        }else{
-            console.log('error in initState().');
-            console.log(name);
-        }
-    }
 
     G6.registerEdge('relate', {
-        setState: (name, value, item) => {
-            initState(name, value, item, relateColor, false);
+        draw(cfg, group){
+            const relateAttr = new EdgeAttr(false);
+            shape = group.addShape("path", {
+                attrs: relateAttr.getAttr(),
+                name: "relate-shape",
+            });
+            return shape;
         },
     }, 'relate-line');
 
     G6.registerEdge('include', {
-        setState: (name, value, item) => {
-            initState(name, value, item, includeColor, false);
+        draw(cfg, group){
+            const includeAttr = new EdgeAttr(false);
+            shape = group.addShape("path", {
+                attrs: includeAttr.getAttr(),
+                name: "include-shape",
+            });
+            return shape;
         },
     }, 'include-line');
 
     G6.registerEdge('equal', {
-        setState: (name, value, item) => {
-            initState(name, value, item, equalColor, true);
+        draw(cfg, group){
+            const equalAttr = new EdgeAttr(true);
+            shape = group.addShape("path", {
+                attrs: equalAttr.getAttr(),
+                name: "equal-shape",
+            });
+            return shape;
         },
     }, 'equal-line');
 
     graph.data(data);
     graph.render();
-
-    // init
-    // これがないと最初に表示されるエッジがdefaultのものでアローもない。
-    graph.findAll('edge', (edge) => {
-        graph.setItemState(edge, 'active', false);
-    });
 
     if (typeof window !== 'undefined')
         window.onresize = () => {
