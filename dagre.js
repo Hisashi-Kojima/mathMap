@@ -236,16 +236,40 @@ function visualizeRelationship(graph, node, irrelevantNodeOpacity){
  * (source node) (from edge)  (node)  (to edge) (target node)
  *      O             ->        O        ->          O
  * 
+ * source nodeとtarget nodeのどちらか１つでも隠されている場合、
+ * 新しいエッジは作成しない。
+ * 
+ * 削除する2つのエッジが両方activeの場合、新しいエッジもactiveにする。
+ * 
+ * @param {object} graph - G6 graph.
  * @param {object} fromEdge
  * @param {object} toEdge
  */
-function createNewEdgeModel(fromEdge, toEdge){
+function createNewEdgeModel(graph, fromEdge, toEdge){
     const fromModel = fromEdge._cfg.model;
     const toModel = toEdge._cfg.model;
 
     const sourceNodeId = fromModel.source;
     const targetNodeId = toModel.target;
-    const new_model = {
+
+    const sourceNode = graph.findById(sourceNodeId);
+    const targetNode = graph.findById(targetNodeId);
+
+    let activate = false;
+
+    if(!(sourceNode._cfg.visible && targetNode._cfg.visible)){
+        return {
+            newModel: {},
+            activate: activate,
+        };
+    }
+
+    if(!fromEdge._cfg.states.includes('edgeState:inactive') &&
+       !toEdge._cfg.states.includes('edgeState:inactive')){
+        activate = true;
+    }
+
+    const newModel = {
         id: sourceNodeId+'-'+targetNodeId,
         source: sourceNodeId,
         target: targetNodeId
@@ -253,40 +277,48 @@ function createNewEdgeModel(fromEdge, toEdge){
     
     switch(toModel.type){
         case 'relate':
-            new_model.type = toModel.type;
-            new_model.style = toModel.style;
+            newModel.type = toModel.type;
+            newModel.style = toModel.style;
             break;
         case 'equal':
-            new_model.type = fromModel.type;
-            new_model.style = fromModel.style;
+            newModel.type = fromModel.type;
+            newModel.style = fromModel.style;
             break;
         default:
             // toModelがincludeの場合
             if(fromModel.type == 'relate'){
-                new_model.type = fromModel.type;
-                new_model.style = fromModel.style;
+                newModel.type = fromModel.type;
+                newModel.style = fromModel.style;
             }else{
-                new_model.type = toModel.type;
-                new_model.style = toModel.style;
+                newModel.type = toModel.type;
+                newModel.style = toModel.style;
             }
     }
 
-    return new_model;
+    return {
+        newModel: newModel,
+        activate: activate,
+    };
 }
 
 /**
  * 複数のエッジから複数のエッジを作る関数。
+ * @param {object} graph - G6 graph.
  * @param {object} fromEdges
  * @param {object} toEdges
  */
-function createNewEdges(fromEdges, toEdges){
-    const new_edge_models = [];
+function createNewEdges(graph, fromEdges, toEdges){
+    const newEdgeModels = [];
     for(let fromEdge of fromEdges){
         for(let toEdge of toEdges){
-            new_edge_models.push(createNewEdgeModel(fromEdge, toEdge));
+            const newEdgeModelMap = createNewEdgeModel(graph, fromEdge, toEdge);
+            const newEdgeModel = newEdgeModelMap.newModel;
+            if(Object.keys(newEdgeModel).length > 0){
+                newEdgeModels.push(newEdgeModelMap);
+            }
         }
     }
-    return new_edge_models;
+    return newEdgeModels;
 }
 
 /**
@@ -318,12 +350,16 @@ function hideNode(graph, node){
     const edges = separateEdge(node);
     const fromEdges = edges['fromEdges'];
     const toEdges = edges['toEdges'];
-    const new_edge_models = createNewEdges(fromEdges, toEdges);
-    for(let model of new_edge_models){
-        graph.addItem('edge', model);
+    const newEdgeModels = createNewEdges(graph, fromEdges, toEdges);
+    for(let map of newEdgeModels){
+        graph.addItem('edge', map.newModel);
+        const newEdge = graph.findById(map.newModel.id);
+        // edge init.
+        if(map.activate){
+            changeEdgeState(graph, newEdge, true);
+        }
     }
-    // TODO: エッジにスタイルを適用するためにリフレッシュが必要。
-    const new_edge = graph.findById(new_edge_models[0].id);
+    graph.refresh();
 }
 
 
