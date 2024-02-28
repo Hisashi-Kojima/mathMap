@@ -23,10 +23,10 @@ class Edge{
      * @param {object} graph - G6 graph.
      * @param {object} nodeId - original nodeId.
      * @param {Array<Map<string>>} collected - array of collected source/target nodeId.
-     * @param {Array<Map<string>>} new_uncollected - array of uncollected source/target nodeId.
+     * @param {Array<Map<string>>} newUncollected - array of uncollected source/target nodeId.
      * @param {Number} nodeOpacity - collected node opacity. greater than irrelevant node.
      */
-    collectEdgeAndNode(graph, nodeId, collected, new_uncollected, nodeOpacity){
+    collectEdgeAndNode(graph, nodeId, collected, newUncollected, nodeOpacity){
         // A edge has 2 nodes (source ID and target ID).
         // One of them is nodeId.
         if(nodeId != this.neighboringNodeId){
@@ -37,8 +37,8 @@ class Edge{
             // への対応条件
             const neighboringNodeId = (map) => map.nodeId === this.neighboringNodeId;
             if(!collected.some(neighboringNodeId) &&
-               !new_uncollected.some(neighboringNodeId)){
-                new_uncollected.push(
+               !newUncollected.some(neighboringNodeId)){
+                newUncollected.push(
                     {'nodeId': this.neighboringNodeId, 'opacity': nodeOpacity} 
                 );
             }
@@ -107,7 +107,7 @@ function calcNodeOpacity(nodeOpacity, irrelevantNodeOpacity){
  * @param {Number} irrelevantNodeOpacity - irrelevant node opacity.
  */
 function collectID(graph, collected, uncollected, collectSource, nodeOpacity, irrelevantNodeOpacity){
-    const new_uncollected = [];
+    const newUncollected = [];
     for(let map of uncollected){
         const node = graph.findById(map.nodeId);
         const nodeId = node._cfg.id;
@@ -116,12 +116,12 @@ function collectID(graph, collected, uncollected, collectSource, nodeOpacity, ir
         
         const newNodeOpacity = calcNodeOpacity(nodeOpacity, irrelevantNodeOpacity);
         const edges = node._cfg.edges;
-        for(let raw_edge of edges){
-            const edge = new Edge(raw_edge, collectSource);
-            edge.collectEdgeAndNode(graph, nodeId, collected, new_uncollected, newNodeOpacity);
+        for(let rawEdge of edges){
+            const edge = new Edge(rawEdge, collectSource);
+            edge.collectEdgeAndNode(graph, nodeId, collected, newUncollected, newNodeOpacity);
         }
-        if(new_uncollected.length > 0){
-            collectID(graph, collected, new_uncollected, collectSource, newNodeOpacity, irrelevantNodeOpacity);
+        if(newUncollected.length > 0){
+            collectID(graph, collected, newUncollected, collectSource, newNodeOpacity, irrelevantNodeOpacity);
         }
     }
 }
@@ -165,9 +165,9 @@ function updateNodeColor(graph, node, color){
 
 // もとのnodeから離れているほどnode文字と透過率を薄くしている。
 function updateNode(graph, node, opacity){
-    const color_num = Math.floor((1 - opacity) * 255);
-    const color_hex = color_num.toString(16);
-    const color = '#' + color_hex + color_hex + color_hex;
+    const colorNum = Math.floor((1 - opacity) * 255);
+    const colorHex = colorNum.toString(16);
+    const color = '#' + colorHex + colorHex + colorHex;
     graph.updateItem(node, {
         labelCfg: {
             style: {
@@ -186,8 +186,8 @@ function updateNode(graph, node, opacity){
  * @param {Number} irrelevantNodeOpacity - 無関係なノードのopacity。
  */
 function visualizeRelationship(graph, node, irrelevantNodeOpacity){
-    const uncollected_sources = []
-    const uncollected_targets = []
+    const uncollectedSources = []
+    const uncollectedTargets = []
 
     const nodeId = node._cfg.id;
     const edges = node._cfg.edges;
@@ -196,12 +196,12 @@ function visualizeRelationship(graph, node, irrelevantNodeOpacity){
         const sourceNodeId = edge._cfg.model.source;
 
         if(sourceNodeId == nodeId){
-            uncollected_targets.push({
+            uncollectedTargets.push({
                 'nodeId': edge._cfg.model.target,
                 'opacity': nodeOpacity
             });
         }else{
-            uncollected_sources.push({
+            uncollectedSources.push({
                 'nodeId': sourceNodeId,
                 'opacity': nodeOpacity
             });
@@ -211,9 +211,9 @@ function visualizeRelationship(graph, node, irrelevantNodeOpacity){
     
     const firstNodeMap = {'nodeId': nodeId, 'opacity': 1};
     const sources = [firstNodeMap];
-    collectID(graph, sources, uncollected_sources, true, nodeOpacity, irrelevantNodeOpacity);
+    collectID(graph, sources, uncollectedSources, true, nodeOpacity, irrelevantNodeOpacity);
     const targets = [firstNodeMap];
-    collectID(graph, targets, uncollected_targets, false, nodeOpacity, irrelevantNodeOpacity);
+    collectID(graph, targets, uncollectedTargets, false, nodeOpacity, irrelevantNodeOpacity);
 
     graph.findAll('node', n => {
         graph.setItemState(n, 'nodeState', 'irrelevant');
