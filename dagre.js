@@ -223,11 +223,13 @@ function visualizeRelationship(graph, node, irrelevantNodeOpacity){
         const n = graph.findById(map.nodeId);
         graph.setItemState(n, 'nodeState', 'source');
         updateNode(graph, n, map.opacity);
+        n.toFront();
     }
     for(let map of targets){
         const n = graph.findById(map.nodeId);
         graph.setItemState(n, 'nodeState', 'target');
         updateNode(graph, n, map.opacity);
+        n.toFront();
     }
 }
 
